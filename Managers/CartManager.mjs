@@ -6,7 +6,7 @@ const products = new ProductManager();
 
 class CartsManager {
   constructor() {
-    this.path = "carrito.json";
+    this.path = "../JSONs/carrito.json";
   }
   readCart = async () => {
     let allCart = await fs.readFile(this.path, "utf-8");

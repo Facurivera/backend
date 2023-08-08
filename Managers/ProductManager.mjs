@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 
 class ProductManager{
     constructor(){
-        this.path = "Products.json";
+        this.path = "products.json";
         this.products = [];
     }
 

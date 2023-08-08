@@ -1,0 +1,13 @@
+{{> header}}
+<div>
+    <h1>Productos:</h1>
+    <div class="container">
+    {{#each productos}}
+        <div class="prod">
+            <img class="img" src="{{img}}" alt="%"><br>
+            <p class="detail">Nombre : <b>{{nombre}}</b><br>
+            Precio: <b>{{precio}}</b><br>
+            </p>
+        </div>
+    {{/each}}
+</div>

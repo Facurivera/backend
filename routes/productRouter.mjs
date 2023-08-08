@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductManager from "../ProductManager.mjs";
+import ProductManager from "../Managers/ProductManager.mjs";
 
 const prodRouter = Router();
 const PM = new ProductManager();
@@ -9,7 +9,7 @@ prodRouter.get("/", async (req, res) => {
     let allProducts = await PM.getProducts();
     if(!limit) return res.send(await allProducts);
     let productLimit = allProducts.slice(0, limit);
-    res.send(await productLimit);
+    res.render("index", await productLimit);
 });
 
 prodRouter.get("/:id", async (req, res) => {
@@ -49,10 +49,7 @@ prodRouter.post("/", async (req,res) =>{
         res.status(400).send({status:"error", message:"no se cargo el campo Category"});
     };
     
-    if (!thumbnail) {
-        res.status(400).send({status:"error", message:"Error! No se cargó el campo Thumbnails!"});
-        return false;
-    } else if ((!Array.isArray(thumbnail)) || (thumbnail.length == 0)) {
+    if ((!Array.isArray(thumbnail)) || (thumbnail.length == 0)) {
         res.status(400).send({status:"error", message:"Error! Debe ingresar al menos una imagen en el Array Thumbnails!"});
         return false;
     }
@@ -91,10 +88,7 @@ prodRouter.put("/:id", async (req,res) =>{
         res.status(400).send({status:"error", message:"no se cargo el campo Category"});
     };
     
-    if (!thumbnail) {
-        res.status(400).send({status:"error", message:"Error! No se cargó el campo Thumbnails!"});
-        return false;
-    } else if ((!Array.isArray(thumbnail)) || (thumbnail.length == 0)) {
+    if ((!Array.isArray(thumbnail)) || (thumbnail.length == 0)) {
         res.status(400).send({status:"error", message:"Error! Debe ingresar al menos una imagen en el Array Thumbnails!"});
         return false;
     }

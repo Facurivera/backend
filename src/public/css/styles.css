@@ -1,0 +1,77 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(255, 255, 255);
+}
+
+header {
+  background-color: rgb(196, 12, 21);
+}
+
+.titulo {
+  text-align: center;
+  color: white;
+  font-size: xx-large;
+}
+
+.container {
+  display: flex;
+  text-align: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.prod {
+  max-width: 400px;
+  max-height: 500px;
+  margin: 25px;
+  margin-bottom: 40px;
+  width: 397px;
+}
+
+.img {
+  width: 350px;
+  height: 350px;
+}
+
+.detail {
+  font-size: x-large;
+}
+
+.sub-titulo {
+  text-align: center;
+  margin: 5px;
+}
+
+.formulario {
+  text-align: center;
+  margin: 10px;
+}
+
+.casilleros {
+  margin: 3px;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 2px;
+  width: 25%;
+}
+
+.boton {
+  border: 2px solid;
+  border-radius: 15px;
+  padding: 4px;
+  margin: 9px;
+  background-color: rgb(196, 12, 21);
+  color: white;
+  cursor: pointer;
+}
+
+.boton:hover {
+  background-color: white;
+  color: rgb(196, 12, 21);
+}
