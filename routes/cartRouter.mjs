@@ -1,24 +1,40 @@
 import { Router } from "express";
-import CartManager from "../Managers/CartManager.mjs";
+import CartManager from "../src/dao/CartManager.mjs";
 
-const cartRouter = Router();
+const cartsRouter = Router();
 const CM = new CartManager();
 
-cartRouter.post("/", async (req, res) => {
-    res.send(await CM.addCart())
-})
+cartsRouter.post("/", async (req, res) => {
+    const newCart = await CM.newCart();
 
-cartRouter.get("/", async (req, res) =>{
-    res.send(await CM.readCart())
-})
+    if (newCart) {
+        res.send({status:"ok", message:"Agregado correctamente"});
+    } else {
+        res.status(500).send({status:"error", message:"Error"});
+    }
+});
 
-cartRouter.get("/:id", async (req, res) =>{
-    res.send(await CM.getCartById(req.params.id))
-})
+cartsRouter.get("/:cid", async (req, res) => {
+    const cid = req.params.cid;
+    const cart = await CM.getCart(cid);
 
-cartRouter.post("/:cid/products/:pid", async (req, res) => {
-    let cartId = req.params .cid;
-    let prodId = req.params.pid;
-    res.send(await CM.addProductInCart(cartId, prodId));
-})
-export default cartRouter
+    if (cart) {
+        res.send({products:cart.products});
+    } else {
+        res.status(400).send({status:"error", message:"Error, id invalido"});
+    }
+});
+
+cartsRouter.post("/:cid/products/:pid", async (req, res) => {
+    const cid = req.params.cid;
+    const pid = req.params.pid;
+    const result = await CM.addProductToCart(cid, pid);
+
+    if (result) {
+        res.send({status:"ok", message:"Producto agregado"});
+    } else {
+        res.status(400).send({status:"error", message:"Error, No se pudo agregar"});
+    }
+});
+
+export default cartsRouter;

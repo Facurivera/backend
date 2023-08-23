@@ -1,36 +1,58 @@
 import express from "express";
+import __dirname from './utils.mjs'
+import handlebars from "express-handlebars";
 import prodRouter from "../routes/productRouter.mjs";
 import cartRouter from "../routes/cartRouter.mjs";
-import { engine } from "express-handlebars";
-import {__dirname} from './utils.mjs'
-import * as path from "path"
 import router from "../routes/viewRoutes.mjs";
 import { Server } from "socket.io";
-
+import ProductManager from "./dao/ProductManager.mjs";
+import ChatManager from "./dao/chatManager.mjs";
+import mongoose from "mongoose";
 
 const app = express();
-app.use(express.urlencoded({extended: true}));
 const puerto = 8080;
-
 const httpServer = app.listen(puerto, () => {
     console.log('servidor conectado');
 });
-httpServer.on("error", (error) => console.log("error en el server"));
 
 const socketServer = new Server(httpServer);
+const PM = new ProductManager();
+const CTM = new ChatManager();
 
-
-app.engine("handlebars", engine());
+app.engine("handlebars", handlebars.engine());
+app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
-app.set('views', path.resolve(__dirname + "/views"));
-app.use('/', express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/public"));
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.use("/api/products/", prodRouter);
+app.use("/api/carts/", cartRouter);
 app.use("/", router);
 
-socketServer.on('connect', () =>{
-    console.log("nueva conexion")
-})
+mongoose.connect("mongodb+srv://facurivera:facu1441@cluster0.yh4hxd2.mongodb.net/Ecommerce?retryWrites=true&w=majority");
 
+socketServer.on("connection", (socket) => {
+    console.log("Nueva Conexión!");
 
-//app.use("/", prodRouter);
-//app.use("/api/carts/", cartRouter);
+    const products = PM.getProducts();
+    socket.emit("realTimeProducts", products);
+
+    socket.on("nuevoProducto", (data) => {
+        const product = {title:data.title, description:"", code:"", price:data.price, status:"", stock:10, category:"", thumbnails:data.thumbnails};
+        PM.addProduct(product);
+        const products = PM.getProducts();
+        socket.emit("realTimeProducts", products);
+    });
+
+    socket.on("eliminarProducto", (data) => {
+        PM.deleteProduct(parseInt(data));
+        const products = PM.getProducts();
+        socket.emit("realTimeProducts", products);
+    });
+
+    socket.on("newMessage", async (data) => {
+        CTM.createMessage(data);
+        const messages = await CTM.getMessages();
+        socket.emit("messages", messages);
+    });
+});

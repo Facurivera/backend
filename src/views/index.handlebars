@@ -2,11 +2,11 @@
 <div>
     <h1>Productos:</h1>
     <div class="container">
-    {{#each productos}}
+    {{#each products}}
         <div class="prod">
-            <img class="img" src="{{img}}" alt="%"><br>
-            <p class="detail">Nombre : <b>{{nombre}}</b><br>
-            Precio: <b>{{precio}}</b><br>
+            <img class="img" src="{{this.thumbnails}}" alt="{{this.title}}"><br>
+            <p class="detail">Nombre : <b>{{this.title}}</b><br>
+            Precio: <b>${{this.price}}</b><br>
             </p>
         </div>
     {{/each}}

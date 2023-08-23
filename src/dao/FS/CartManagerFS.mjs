@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import { nanoid } from "nanoid";
-import ProductManager from "./ProductManager.mjs";
+import ProductManager from "../ProductManager.mjs";
 
 const products = new ProductManager();
 

@@ -4,27 +4,21 @@
     <h1 class="sub-titulo">Agregar Productos</h1>
     <form method="post" action="/prods" class="formulario">
         <div>
-            <input type="text" class="casilleros" id="Imagen" name="Url" placeholder="URL del Producto...">
+            <input type="text" class="casilleros" id="thimbnails" name="Url" placeholder="URL del Producto...">
         </div>
         <div>
-            <input type="text" class="casilleros" id="producto" name="Producto" placeholder="Nombre del Producto...">
+            <input type="text" class="casilleros" id="title" name="Producto" placeholder="Nombre del Producto...">
         </div>
         <div>
-            <input type="text" class="casilleros" id="precio" name="Precio" placeholder="Precio del Producto...">
+            <input type="text" class="casilleros" id="price" name="Precio" placeholder="Precio del Producto...">
         </div>
-        <button type="submit" class="boton">Enviar</button>
+        <input type="button" class="boton" id="btnAgregarProducto" value="Agregar">
+        <h2>Eliminar Productos</h2>
+        <div>
+            <input type="text" class="casilleros" id="idProduct" name="Eliminar" placeholder="Id del Producto...">
+        </div>
+        <input type="button" class="boton" id="btnEliminarProducto" value="Eliminar">
     </form>
 </div>
-<div>
-    <h1 class="sub-titulo">Productos:</h1>
-    <div class="container">
-    {{#each productos}}
-        <div class="prod">
-            <img class="img" src="{{img}}" alt="%"><br>
-            <p class="detail">Nombre : <b>{{nombre}}</b><br>
-            Precio: <b>{{precio}}</b><br>
-            </p>
-        </div>
-    {{/each}}
-</div>
-</div>
+<script src="socket.io/socket.io.js"></script>
+<script src="../public/js/index.js"></script>

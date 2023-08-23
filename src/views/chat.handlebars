@@ -1,0 +1,17 @@
+{{> header}}
+
+<main>
+    <h1 class="sub-titulo">Mongo DB Chat</h1>
+    <div class="mensajeria">
+        <div class="">
+            <input type="text" class="casilleros" id="user" placeholder="usuario">
+        </div>
+        <div class="">
+            <input type="text" class="casilleros" id="message" placeholder="mensaje">
+        </div>
+        <button type="button" class="boton" id="btnSendMessage">Enviar</button>    
+    </div>
+</main>
+
+<script src="socket.io/socket.io.js"></script>
+<script src="js/chat.js"></script>

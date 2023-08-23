@@ -1,27 +1,25 @@
 import { Router } from "express";
-import ProductManager from "../Managers/ProductManager.mjs";
+import ProductManager from "../src/dao/ProductManager.mjs";
 
 const prodRouter = Router();
 const PM = new ProductManager();
 
-prodRouter.get("/", async (req, res) => {    
-    let limit = req.query.limit;
-    let allProducts = await PM.getProducts();
-    if(!limit) return res.send(await allProducts);
-    let productLimit = allProducts.slice(0, limit);
-    res.render("index", await productLimit);
+prodRouter.get("/", async (req, res) => {
+    let {limit} = req.query;
+    const products = await PM.getProducts(limit);
+
+    res.send({products});
 });
 
-prodRouter.get("/:id", async (req, res) => {
-    let id = req.params.id;
-    let allProducts = await PM.getProducts();
-    let ProductsById = allProducts.find(productos => productos.id === id ) || "no existe el producto";
-    res.send(await ProductsById);
+prodRouter.get("/:pid", async (req, res) => {
+    let pid = req.params.pid;
+    const products = await PM.getProductById(pid);
+    
+    res.send({products});
 });
 
 prodRouter.post("/", async (req,res) =>{    
-    let newProduct = req.body
-    let {title, description, price, code, status, stock, category, thumbnail} = newProduct;
+    let {title, description, price, code, status, stock, category, thumbnails} = req.body;
     
     if (!title){
         res.status(400).send({status:"error", message:"no se cargo el campo Title"});
@@ -49,18 +47,26 @@ prodRouter.post("/", async (req,res) =>{
         res.status(400).send({status:"error", message:"no se cargo el campo Category"});
     };
     
-    if ((!Array.isArray(thumbnail)) || (thumbnail.length == 0)) {
-        res.status(400).send({status:"error", message:"Error! Debe ingresar al menos una imagen en el Array Thumbnails!"});
+    if (!thumbnails) {
+        res.status(400).send({status:"error", message:"no se cargó el campo Thumbnails"});
         return false;
-    }
+    } else if ((!Array.isArray(thumbnails)) || (thumbnails.length == 0)) {
+        res.status(400).send({status:"error", message:"debe ingresar al menos una imagen en el Array Thumbnail"});
+        return false;
+    };
 
-    res.send(await PM.addProducts(newProduct))
+    const result = await PM.addProduct({title, description, code, price, status, stock, category, thumbnails}); 
+
+    if (result) {
+        res.send({status:"ok", message:"Producto agregado correctamente"});
+    } else {
+        res.status(500).send({status:"error", message:"No se pudo agregar el Producto"});
+    }
 });
 
-prodRouter.put("/:id", async (req,res) =>{
-    let id = req.params.id;
-    let updateProduct = req.body;
-    let {title, description, price, code, status, stock, category, thumbnail} = updateProduct;
+prodRouter.put("/:pid", async (req,res) =>{
+    let pid = req.params.pid;
+    let {title, description, price, code, status, stock, category, thumbnails} = req.body;
     
     if (!title){
         res.status(400).send({status:"error", message:"no se cargo el campo Title"});
@@ -88,31 +94,32 @@ prodRouter.put("/:id", async (req,res) =>{
         res.status(400).send({status:"error", message:"no se cargo el campo Category"});
     };
     
-    if ((!Array.isArray(thumbnail)) || (thumbnail.length == 0)) {
-        res.status(400).send({status:"error", message:"Error! Debe ingresar al menos una imagen en el Array Thumbnails!"});
+    if (!thumbnails) {
+        res.status(400).send({status:"error", message:"no se cargó el campo Thumbnails"});
+        return false;
+    } else if ((!Array.isArray(thumbnails)) || (thumbnails.length == 0)) {
+        res.status(400).send({status:"error", message:"debe ingresar al menos una imagen en el Array Thumbnails"});
         return false;
     }
 
-    res.send(await PM.updateProduct(id, updateProduct))
+    const result = await PM.updateProduct(pid, {title, description, code, price, status, stock, category, thumbnails});
+
+    if (result) {
+        res.send({status:"ok", message:"Producto actualizado correctamente"});
+    } else {
+        res.status(500).send({status:"error", message:"No se pudo actualizar el Producto"});
+    }
 });
 
-prodRouter.delete("/:id", async (req, res)=> {
-    let id = req.params.id
-    res.send(await PM.deleteProduct(id))
+prodRouter.delete("/:pid", async (req, res)=> {
+    let pid = req.params.pid
+    const result = await PM.deleteProduct(pid)
 
-
-
-
-
-
-
-
-    /*    let pid = Number(req.params.pid);
-    if (PM.deleteProduct(pid)){
-        res.send({status:"ok", message:"producto eliminado"});
-    }else{
-        res.status(500).send({status:"error", message:"error"})
-    };*/
-})
+    if (result) {
+        res.send({status:"ok", message:"Producto eliminado correctamente"});
+    } else {
+        res.status(500).send({status:"error", message:"No se pudo eliminar el Producto"});
+    }
+});
 
 export default prodRouter;

@@ -75,3 +75,23 @@ header {
   background-color: white;
   color: rgb(196, 12, 21);
 }
+
+.enlaces {
+  padding: 25px;
+}
+
+.enlace {
+  color: white;
+  text-decoration: none;
+  margin-left: 50px;
+  font-size: 20px;
+}
+
+.enlace:hover {
+  color: black;
+}
+
+.mensajeria {
+  text-align: center;
+  margin: 20px;
+}
