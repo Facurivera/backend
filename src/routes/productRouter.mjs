@@ -1,13 +1,11 @@
 import { Router } from "express";
-import ProductManager from "../src/dao/ProductManager.mjs";
+import ProductManager from "../dao/ProductManager.mjs";
 
 const prodRouter = Router();
 const PM = new ProductManager();
 
 prodRouter.get("/", async (req, res) => {
-    let {limit} = req.query;
-    const products = await PM.getProducts(limit);
-
+    const products = await PM.getProducts(req.query);
     res.send({products});
 });
 
@@ -51,7 +49,7 @@ prodRouter.post("/", async (req,res) =>{
         res.status(400).send({status:"error", message:"no se cargó el campo Thumbnails"});
         return false;
     } else if ((!Array.isArray(thumbnails)) || (thumbnails.length == 0)) {
-        res.status(400).send({status:"error", message:"debe ingresar al menos una imagen en el Array Thumbnail"});
+        res.status(400).send({status:"error", message:"debe ingresar al menos una imagen en el Array Thumbnails"});
         return false;
     };
 

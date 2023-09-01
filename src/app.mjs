@@ -1,9 +1,11 @@
 import express from "express";
 import __dirname from './utils.mjs'
-import handlebars from "express-handlebars";
-import prodRouter from "../routes/productRouter.mjs";
-import cartRouter from "../routes/cartRouter.mjs";
-import router from "../routes/viewRoutes.mjs";
+import expressHandlebars from "express-handlebars";
+import Handlebars from "handlebars";
+import prodRouter from "./routes/productRouter.mjs";
+import cartRouter from "./routes/cartRouter.mjs";
+import router from "./routes/viewRoutes.mjs";
+import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access'
 import { Server } from "socket.io";
 import ProductManager from "./dao/ProductManager.mjs";
 import ChatManager from "./dao/chatManager.mjs";
@@ -19,7 +21,9 @@ const socketServer = new Server(httpServer);
 const PM = new ProductManager();
 const CTM = new ChatManager();
 
-app.engine("handlebars", handlebars.engine());
+app.engine('handlebars', expressHandlebars.engine({
+    handlebars: allowInsecurePrototypeAccess(Handlebars)
+}));
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 app.use(express.static(__dirname + "/public"));
@@ -37,10 +41,10 @@ socketServer.on("connection", (socket) => {
     const products = PM.getProducts();
     socket.emit("realTimeProducts", products);
 
-    socket.on("nuevoProducto", (data) => {
+    socket.on("nuevoProducto",async (data) => {
         const product = {title:data.title, description:"", code:"", price:data.price, status:"", stock:10, category:"", thumbnails:data.thumbnails};
         PM.addProduct(product);
-        const products = PM.getProducts();
+        const products = await PM.getProducts();
         socket.emit("realTimeProducts", products);
     });
 

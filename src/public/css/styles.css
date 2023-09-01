@@ -95,3 +95,18 @@ header {
   text-align: center;
   margin: 20px;
 }
+
+.paginado {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 25px;
+}
+
+.link {
+  color: white;
+  background: red;
+  border: 1px solid black;
+  border-radius: 15px;
+  font-size: 25px;
+  padding: 5px;
+}
