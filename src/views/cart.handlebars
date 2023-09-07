@@ -1,0 +1,15 @@
+{{> header}}
+<div class="carrito">
+    <table>
+        {{#each products}}
+            <tr>
+                <td><img src="{{this.product.thumbnails}}" alt="{{this.product.title}}" class="carrito-img"></td>
+                <td class="carrito-text">{{this.product.title}}</td>
+                <td class="carrito-text">${{this.product.price}}</td>
+                <td><button class="boton carrito-boton" onclick="eliminarProducto('{{product.product._id}}')">Eliminar</button></td>
+            </tr>
+        {{/each}}
+    </table>
+</div>
+
+<script src="../public/js/cart.js"></script>

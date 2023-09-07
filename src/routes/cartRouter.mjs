@@ -37,11 +37,23 @@ cartsRouter.post("/:cid/products/:pid", async (req, res) => {
     }
 });
 
+cartsRouter.put("/:cid", async (req, res) => {
+    const cid = req.params.cid;
+    const products = req.body.products;
+    const result = await CM.updateProducts(cid, products);
+
+    if (result) {
+        res.send({status:"ok", message:"Producto agregado correctamente"});
+    } else {
+        res.status(400).send({status:"error", message:"No se pudo agregar el Producto al Carrito"});
+    }
+});
+
 cartsRouter.put("/:cid/products/:pid", async (req, res) => {
     const cid = req.params.cid;
     const pid = req.params.pid;
     const quantity = req.body.quantity;
-    const result = await CM.updateQuantityProductFromCart(cid, pid, quantity);
+    const result = await CM.updateQuantity(cid, pid, quantity);
 
     if (result) {
         res.send({status:"ok", message:"Producto actualizado correctamente"});
@@ -53,7 +65,7 @@ cartsRouter.put("/:cid/products/:pid", async (req, res) => {
 cartsRouter.delete("/:cid/products/:pid", async (req, res) => {
     const cid = req.params.cid;
     const pid = req.params.pid;
-    const result = await CM.deleteProductFromCart(cid, pid);
+    const result = await CM.deleteProduct(cid, pid);
 
     if (result) {
         res.send({status:"ok", message:"Producto eliminado correctamente"});
@@ -64,7 +76,7 @@ cartsRouter.delete("/:cid/products/:pid", async (req, res) => {
 
 cartsRouter.delete("/:cid", async (req, res) => {
     const cid = req.params.cid;
-    const result = await CM.deleteProductsFromCart(cid);
+    const result = await CM.deleteProducts(cid);
 
     if (result) {
         res.send({status:"ok", message:"Carrito vaciado correctamente"});

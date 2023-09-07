@@ -2,19 +2,17 @@ import { cartModel } from "./models/cart.model.mjs";
 
 class CartsManager {
     async newCart() {
-      await cartModel.create({products:[]});
       console.log("Cart creado");
-
-      return true;
+      return await cartModel.create({products:[]});;
     }
 
     async getCart(id) {
-      if (this.validateId(id)) {
-          return await cartModel.findOne({_id:id}).lean() || null;
-      } else {
-          console.log("No encontrado");
+        if (this.validateId(id)) {
+            return await cartModel.findOne({_id:id}).lean() || null;
+        } else {
+            console.log("No encontrado");
           
-          return null;
+            return null;
       }
     }
 
@@ -39,16 +37,33 @@ class CartsManager {
     
                 return true;
             } else {
-                console.log("No encontrado");
-                
-                return false;
+            console.log("No encontrado");
+
+            return false
             }
-        } catch (error) {
+        }catch(error){
             return false
         }
     }
 
-    async updateQuantityProductFromCart(cid, pid, quantity) {
+    async updateProducts(cid, products) {
+        try {
+            if (this.validateId(cid)) {
+                await cartModel.findOneAndUpdate({_id:cid}, {products:products}, {new:true, upsert:true});
+            console.log("Producto actualizado");
+    
+                return true;
+            } else {
+                console.log("No encontrado");
+                
+                return false;
+            }
+        }catch (error){
+            return false
+        }
+    }
+
+    async updateQuantity(cid, pid, quantity) {
         try {
             if (this.validateId(cid)) {
                 const cart = await this.getCart(cid);
@@ -61,15 +76,15 @@ class CartsManager {
                 return true;
             } else {
                 console.log("No encontrado");
-                
-                return false;
+
+                return false
             }
-        } catch (error) {
+        }catch (error){
             return false
         }
     }
 
-    async deleteProductFromCart(cid, pid) {
+    async deleteProduct(cid, pid) {
         try {
             if (this.validateId(cid)) {
                 const cart = await this.getCart(cid);
@@ -81,15 +96,15 @@ class CartsManager {
                 return true;
             } else {
                 console.log("No encontrado");
-                
-                return false;
+
+                return false
             }
         } catch (error) {
             return false
         }
     }
 
-    async deleteProductsFromCart(cid) {
+    async deleteProducts(cid) {
         try {
             if (this.validateId(cid)) {
                 const cart = await this.getCart(cid);
@@ -97,11 +112,11 @@ class CartsManager {
                 await cartModel.updateOne({_id:cid}, {products:[]});
                 console.log("Productos eliminados");
 
-                return true;
+                    return true;
             } else {
                 console.log("No encontrados");
-                
-                return false;
+
+                return false
             }
         } catch (error) {
             return false
@@ -109,7 +124,7 @@ class CartsManager {
     }
 
     validateId(id) {
-      return id.length === 24 ? true : false;
+        return id.length === 24 ? true : false;
     }
 }
 

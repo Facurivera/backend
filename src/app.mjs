@@ -10,13 +10,33 @@ import { Server } from "socket.io";
 import ProductManager from "./dao/ProductManager.mjs";
 import ChatManager from "./dao/chatManager.mjs";
 import mongoose from "mongoose";
+import passport from "passport";
+import MongoStore from "connect-mongo";
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import sessRouter from "./routes/sessionRoutes.mjs";
+import initializePassport from "./config/passportConfig.mjs";
 
 const app = express();
 const puerto = 8080;
+app.use(cookieParser()); 
+app.use(session({
+    store:MongoStore.create({
+        mongoUrl:"mongodb+srv://facurivera:facu1441@cluster0.yh4hxd2.mongodb.net/Ecommerce?retryWrites=true&w=majority",
+        mongoOptions:{useNewUrlParser:true, useUnifiedTopology:true},
+        ttl:20
+    }),
+    secret:"misterio",
+    resave:false,
+    saveUninitialized:false
+}));
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 const httpServer = app.listen(puerto, () => {
     console.log('servidor conectado');
 });
-
 const socketServer = new Server(httpServer);
 const PM = new ProductManager();
 const CTM = new ChatManager();
@@ -27,10 +47,12 @@ app.engine('handlebars', expressHandlebars.engine({
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 app.use(express.static(__dirname + "/public"));
+app.use('/public/js', express.static(__dirname + '/public/js', { 'extensions': ['js'] }));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use("/api/products/", prodRouter);
 app.use("/api/carts/", cartRouter);
+app.use("/api/sessions/", sessRouter);
 app.use("/", router);
 
 mongoose.connect("mongodb+srv://facurivera:facu1441@cluster0.yh4hxd2.mongodb.net/Ecommerce?retryWrites=true&w=majority");

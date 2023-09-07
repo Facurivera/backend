@@ -8,6 +8,7 @@
             <p class="detail">Nombre : <b>{{this.title}}</b><br>
             Precio: <b>${{this.price}}</b><br>
             </p>
+            <button class="boton" onclick="agregarProductoAlCarrito('{{product._id}}')">Agregar</button>
         </div>
     {{/each}}
 </div>
@@ -39,4 +40,5 @@
     </nav>
 </div>
 
+<script src="../public/js/cart.js"></script>
 <script src="../public/js/products.js"></script>

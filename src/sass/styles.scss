@@ -88,9 +88,6 @@ header{
     justify-content: space-evenly;
     margin: 25px;
 }
-.page-item{
-
-}
 .link{
     color: white;
     background: red;
@@ -98,4 +95,41 @@ header{
     border-radius: 15px;
     font-size: 25px;
     padding: 5px;
+}
+.carrito{
+    display: flex;
+    margin-top: 5%;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.carrito-img{
+    height: 150px;
+    width: 150px;
+    margin-right: 100px;
+}
+.carrito-text{
+    font-size: 30px;
+    padding-left: 20px;
+}
+.carrito-boton{
+    font-size: 20px;
+    margin-left: 100px;
+}
+.portada{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 25px;
+}
+.user-formulario{
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+}
+.user-cas{
+    width: 100%;
+}
+.redirrecion{
+    text-decoration: none;
+    text-align: center;
 }
