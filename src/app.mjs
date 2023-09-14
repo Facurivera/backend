@@ -12,21 +12,19 @@ import ChatManager from "./dao/chatManager.mjs";
 import mongoose from "mongoose";
 import passport from "passport";
 import MongoStore from "connect-mongo";
-import cookieParser from "cookie-parser";
 import session from "express-session";
 import sessRouter from "./routes/sessionRoutes.mjs";
 import initializePassport from "./config/passportConfig.mjs";
 
 const app = express();
 const puerto = 8080;
-app.use(cookieParser()); 
 app.use(session({
     store:MongoStore.create({
         mongoUrl:"mongodb+srv://facurivera:facu1441@cluster0.yh4hxd2.mongodb.net/Ecommerce?retryWrites=true&w=majority",
         mongoOptions:{useNewUrlParser:true, useUnifiedTopology:true},
-        ttl:20
+        ttl:10000
     }),
-    secret:"misterio",
+    secret:"S3cr3t0",
     resave:false,
     saveUninitialized:false
 }));
@@ -41,15 +39,15 @@ const socketServer = new Server(httpServer);
 const PM = new ProductManager();
 const CTM = new ChatManager();
 
+app.set("views", __dirname + "/views");
 app.engine('handlebars', expressHandlebars.engine({
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 }));
-app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
-app.use(express.static(__dirname + "/public"));
-app.use('/public/js', express.static(__dirname + '/public/js', { 'extensions': ['js'] }));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use(express.static(__dirname + "/public"));
+
 app.use("/api/products/", prodRouter);
 app.use("/api/carts/", cartRouter);
 app.use("/api/sessions/", sessRouter);
@@ -66,7 +64,7 @@ socketServer.on("connection", (socket) => {
     socket.on("nuevoProducto",async (data) => {
         const product = {title:data.title, description:"", code:"", price:data.price, status:"", stock:10, category:"", thumbnails:data.thumbnails};
         PM.addProduct(product);
-        const products = await PM.getProducts();
+        const products = PM.getProducts();
         socket.emit("realTimeProducts", products);
     });
 

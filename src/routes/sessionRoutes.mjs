@@ -1,12 +1,12 @@
 import express from "express";
 import UserManager from "../dao/UserManager.mjs";
 import { createHash } from "../utils.mjs";
+import { isValidPassword } from "../utils.mjs";
 import passport from "passport";
 
 const sessRouter = express.Router();
-const UM = new UserManager();
 
-sessRouter.get("/login", passport.authenticate("login", {failureRedirect:"/faillogin"}), async (req, res) => {
+sessRouter.post("/login", passport.authenticate("login", {failureRedirect:"/faillogin"}), async (req, res) => {
     if (!req.user) {
         return res.status(401).send({status:"Error", message:"Usuario y Contraseña invalidos"});
     }
@@ -15,16 +15,8 @@ sessRouter.get("/login", passport.authenticate("login", {failureRedirect:"/faill
     res.send({status:"OK", message:"Hola, " + userLogged.first_name });
 });
 
-sessRouter.get("/faillogin", (req, res) => {
-    res.send({status:"error", message:"Login inválido"});
-})
-
 sessRouter.post("/register", passport.authenticate("register", {failureRedirect:"/failregister"}), async (req, res) => {
-    res.send({status:"OK", message:"Usuario registrado correctamente"});
-});
-
-sessRouter.get("/failregister", (req, res) => {
-    res.send({status:"Error", message:"No se pudo registar el Usuario"});
+    res.redirect("/login");
 });
 
 sessRouter.get("/restore", async (req, res) => {
@@ -37,6 +29,14 @@ sessRouter.get("/restore", async (req, res) => {
     } else {
         res.status(401).send({status:"Error", message:"No se pudo actualizar la contraseña"});
     }    
-})
+});
+
+sessRouter.get("/github", passport.authenticate("github", {scope:["user:email"]}), async (req, res) => {});
+
+sessRouter.get("/githubcallback", passport.authenticate("github", {failureRedirect:"/login"}), async (req, res) => {
+    req.session.user = req.user;
+    req.session.loggedIn = true;
+    res.redirect("/products");
+});
 
 export default sessRouter;

@@ -55,7 +55,6 @@ header{
 }
 
 .boton{
-    border: 2px solid;
     border-radius: 15px;
     padding: 4px;
     margin: 9px;
@@ -66,6 +65,7 @@ header{
 .boton:hover{
     background-color: white;
     color: rgb(196, 12, 21);
+    border: 2px solid rgb(196, 12, 21);
 }
 .enlaces{
     padding: 25px;
@@ -132,4 +132,12 @@ header{
 .redirrecion{
     text-decoration: none;
     text-align: center;
+}
+.inicio-enlaces{
+    font-size: 20px;
+    text-decoration: none;
+    color: black;
+}
+.inicio-enlaces:hover{
+    color: rgb(196, 12, 21);
 }

@@ -1,44 +1,17 @@
 {{> header}}
-<div>
-    <h1>Productos:</h1>
-    <div class="container">
-        {{#each products.payload}}
-        <div class="prod">
-            <img class="img" src="{{this.thumbnails}}" alt="{{this.title}}"><br>
-            <p class="detail">Nombre : <b>{{this.title}}</b><br>
-            Precio: <b>${{this.price}}</b><br>
-            </p>
-            <button class="boton" onclick="agregarProductoAlCarrito('{{product._id}}')">Agregar</button>
-        </div>
-    {{/each}}
-</div>
-<div>
-    <nav class="paginado">
-        {{#if products.hasPrevPage}}
-            <div class="page-item">
-                <a class="link" href="{{products.prevLink}}"><<</a>
-            </div>
-        {{/if}}
-        {{#if products.hasPrevPage}}
-            <div class="page-item">
-                <a class="link" href="{{products.prevLink}}">{{products.prevPage}}</a>
-            </div>    
-        {{/if}}
-            <div class="page-item">
-                <a class="link">{{products.page}}</a>
-            </div>
-        {{#if products.hasNextPage}}
-            <div class="page-item">
-                <a class="link" href="{{products.nextLink}}">{{products.nextPage}}</a>
-            </div>    
-        {{/if}}
-        {{#if products.hasNextPage}}
-            <div class="page-item">
-                <a class="link" href="{{products.nextLink}}">>></a>
-            </div>
-        {{/if}}
-    </nav>
+<div class="sub-titulo">
+    <h1 style="margin-top: 20px;">Bienvenidos a nuestra pagina web !!!</h1>
+        <ul style="margin-top: 30px;">
+            <li style="margin-bottom: 10px;">
+                <a class="inicio-enlaces" href="/login">Login</a>
+            </li>
+            {{#if session.session.loggedIn}}
+                <a class="inicio-enlaces" href="/logout">Logout</a>
+            {{/if}}
+            <li style="margin-top: 20px;">
+                <a class="inicio-enlaces" href="/realtimeproducts">Real Time Products</a>
+            </li>
+        </ul>
 </div>
 
-<script src="../public/js/cart.js"></script>
-<script src="../public/js/products.js"></script>
+<script src="/public/js/products.js"></script>

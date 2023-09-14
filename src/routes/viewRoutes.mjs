@@ -32,15 +32,10 @@ router.get("/products/:pid", async (req, res) => {
     res.render("product", {product});
 });
 
-router.get("/carts/:cid", async (req, res) => {
+router.get("/cart", async (req, res) => {
     const cid = req.params.cid;
-    const cart = await CM.getCart(cid);
-
-    if (cart) {
-        res.render("cart", {products:cart.products});
-    } else {
-        res.status(400).send({status:"error", message:"No se encuentra el ID de Carrito"});
-    }
+    const cart = await PM.getCart(cid);
+    res.render("products", {products});
 });
 
 router.get("/login", (req, res) => {
@@ -58,5 +53,13 @@ router.get("/profile", (req, res) => {
 router.get("/restore", async (req, res) => {
     res.render("restore");
 })
+
+router.get("/faillogin", async (req, res) => {
+    res.send({status:"error", message:"Login inválido"});
+});
+
+router.get("/failregister", async (req, res) => {
+    res.send({status:"Error", message:"No se pudo registar el Usuario"});
+});
 
 export default router

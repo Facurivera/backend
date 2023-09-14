@@ -1,7 +1,7 @@
 {{> header}}
 
 <div class="portada">
-    <h1>Inicia Sesion</h1>
+    <h1>Iniciar Sesion</h1>
     <form class="user-formulario">
         <div>
             <input type="text" class="casilleros user-cas" id="email" placeholder="Usuario...">
@@ -12,8 +12,9 @@
         <button type="button" class="boton" id="btnLogIn">Iniciar</button>
         <h2 style="text-align: center;">O</h2>
         <a href="/register" type="button" class="boton redirrecion" >Registrate</a>
+        <a href="/api/sessions/github" class="boton redirrecion"><b>Loguearme con GitHub</b></a>
+
     </form>
-    
 </div>
 
-<script src="../public/js/login.js"></script>
+<script src="/public/js/login.js"></script>
