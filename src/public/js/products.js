@@ -12,9 +12,9 @@ const agregarProductoAlCarrito = async (pid) => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log("Se agregó al Carrito!");
+            console.log("Se agregó al Carrito");
         });
     } catch(error) {
-        console.log("Error en agregar el Producto al Carrito! " + error);
+        console.log("Error en agregar el Producto al Carrito " + error);
     }
 }
