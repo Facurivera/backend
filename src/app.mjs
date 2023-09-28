@@ -11,26 +11,16 @@ import ProductManager from "./dao/ProductManager.mjs";
 import ChatManager from "./dao/chatManager.mjs";
 import mongoose from "mongoose";
 import passport from "passport";
-import MongoStore from "connect-mongo";
 import session from "express-session";
 import sessRouter from "./routes/sessionRoutes.mjs";
 import initializePassport from "./config/passportConfig.mjs";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const puerto = 8080;
-app.use(session({
-    store:MongoStore.create({
-        mongoUrl:"mongodb+srv://facurivera:facu1441@cluster0.yh4hxd2.mongodb.net/Ecommerce?retryWrites=true&w=majority",
-        mongoOptions:{useNewUrlParser:true, useUnifiedTopology:true},
-        ttl:10000
-    }),
-    secret:"S3cr3t0",
-    resave:false,
-    saveUninitialized:false
-}));
+app.use(cookieParser());
 initializePassport();
 app.use(passport.initialize());
-app.use(passport.session());
 
 const httpServer = app.listen(puerto, () => {
     console.log('servidor conectado');

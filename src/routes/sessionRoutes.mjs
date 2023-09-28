@@ -1,18 +1,24 @@
 import express from "express";
-import UserManager from "../dao/UserManager.mjs";
 import { createHash } from "../utils.mjs";
 import { isValidPassword } from "../utils.mjs";
+import { passportCall, authorization } from "../utils.mjs";
 import passport from "passport";
+import  jwt from "jsonwebtoken"
+import { userModel } from "../dao/models/user.model.mjs";
+
+const PRIVATE_KEY = "S3CR3T0"
 
 const sessRouter = express.Router();
 
-sessRouter.post("/login", passport.authenticate("login", {failureRedirect:"/faillogin"}), async (req, res) => {
-    if (!req.user) {
+sessRouter.post("/login", async (req, res) => {
+    const {email, pass} = req.body;
+    let user = await userModel.findOne({email:email});
+    if (!user) {
         return res.status(401).send({status:"Error", message:"Usuario y Contraseña invalidos"});
     }
-
-    req.session.user = {first_name:req.user.first_name, last_name:req.user.last_name, email:req.user.email, age:req.user.age};
-    res.send({status:"OK", message:"Hola, " + userLogged.first_name });
+    let token = jwt.sign({email:email, password:pass, role:user.role}, PRIVATE_KEY, {expiresIn:"24h"});
+    res.cookie("coderCookieToken", token, {maxAge:3600*1000, httpOnly:true});
+    return res.redirect("/products");
 });
 
 sessRouter.post("/register", passport.authenticate("register", {failureRedirect:"/failregister"}), async (req, res) => {
@@ -37,6 +43,15 @@ sessRouter.get("/githubcallback", passport.authenticate("github", {failureRedire
     req.session.user = req.user;
     req.session.loggedIn = true;
     res.redirect("/products");
+});
+
+sessRouter.get("/logout", async (req, res) => {
+    req.session.destroy;
+    res.redirect("/");
+});
+
+sessRouter.get("/current", passportCall("jwt"), authorization("user"), (req, res) => {
+    res.send({status:"OK", payload:req.user});
 });
 
 export default sessRouter;

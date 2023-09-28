@@ -7,13 +7,17 @@ const registerUser = async () => {
 
     const user = {first_name, last_name, email, age, password};
 
-    const response = await fetch("/api/sessions/register", {
-        method:"POST",
-        headers: {"Content-type": "application/json; charset=UTF-8"},
-        body: JSON.stringify(user),
-    });
-    const data = await response.json();
-    console.log(data);
+    try{
+        const response = await fetch("/api/sessions/register", {
+            method:"POST",
+            headers: {"Content-type": "application/json; charset=UTF-8"},
+            body: JSON.stringify(user),
+        });
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error("Error en la solicitud:", error);
+    }
 }
 
 document.getElementById("btnRegister").onclick = registerUser;
