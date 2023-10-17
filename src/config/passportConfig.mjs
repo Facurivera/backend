@@ -2,6 +2,7 @@ import passport from "passport";
 import local from "passport-local";
 import { userModel } from "../dao/models/user.model.mjs";
 import { createHash, isValidPassword } from "../utils.mjs";
+import GitHubStrategy from "passport-github2";
 import jwt from "passport-jwt";
 
 const LocalStrategy = local.Strategy;
@@ -25,8 +26,10 @@ const initializePassport = () => {
 
                 user = {first_name, last_name, email, age, password:createHash(password)};
 
-                if (user.email == "adminCoder@coder.com") {
+                if (user.email == process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
                     user.role = "admin";
+                } else{
+                    user.role = "user";
                 }
 
                 let result = await userModel.create(user);
@@ -40,7 +43,10 @@ const initializePassport = () => {
         }
     ));
 
-    passport.use("login", new LocalStrategy({passReqToCallback:true,usernameField:"email", session:false}, async (username, password, done) => {
+    passport.use("login", new LocalStrategy(
+        { usernameField: "email", passwordField: "password" },
+        async (username, password, done) => { 
+
         try {
             let user = await userModel.findOne({email:username});
             if (!user) {
@@ -68,11 +74,34 @@ const initializePassport = () => {
 
     passport.use("jwt", new JWTStrategy({
         jwtFromRequest:ExtractJWT.fromExtractors([cookieExtractor]),
-        secretOrKey:"S3CR3T0"
+        secretOrKey:process.env.JWT_SECRET,
     }, async(jwt_payload, done) => {
         try {
-            return done(null, jwt_payload);
+            const user = await userModel.findOne({ email: jwt_payload.email });
+          if (!user) {
+            return done(null, false);
+          }
+          return done(null, user);
         } catch (error) {
+            return done(error);
+        }
+    }));
+    
+    passport.use("github", new GitHubStrategy({
+        clientID: process.env.CLIENT_ID_GITHUB,
+        clientSecret: process.env.CLIENT_SECRET_GITHUB,
+        callbackURL:"http://localhost:8080/api/sessions/githubcallback"
+    }, async (accessToken, refreshToken, profile, done) => {
+        try {
+            const authService = new AuthService();
+            console.log("Profile:", JSON.stringify(profile, null, 2));
+            const user = await authService.githubCallback(profile);
+            if (user) {
+                return done(null, user);
+            } else {
+                return done(null, false);
+            }
+        } catch(error) {
             return done(error);
         }
     }));

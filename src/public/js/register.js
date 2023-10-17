@@ -4,20 +4,27 @@ const registerUser = async () => {
     let email = document.getElementById("email").value;
     let age = document.getElementById("age").value;
     let password = document.getElementById("password").value;
-
-    const user = {first_name, last_name, email, age, password};
-
-    try{
-        const response = await fetch("/api/sessions/register", {
-            method:"POST",
-            headers: {"Content-type": "application/json; charset=UTF-8"},
-            body: JSON.stringify(user),
-        });
-        const data = await response.json();
-        console.log(data);
+  
+    const user = { first_name, last_name, email, age, password };
+  
+    try {
+      const response = await fetch("/api/sessions/register", {
+        method: "POST",
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+        body: JSON.stringify(user),
+      });
+  
+      if (!response.ok) {
+          console.error("Error", await response.text());
+      } else {
+          const data = await response.json();
+          if (data.status === "success" && data.redirect) {
+              window.location.href = data.redirect;
+          }
+      }
     } catch (error) {
-        console.error("Error en la solicitud:", error);
+      console.error("Error", error);
     }
-}
-
-document.getElementById("btnRegister").onclick = registerUser;
+  };
+  
+  document.getElementById("btnRegister").onclick = registerUser;

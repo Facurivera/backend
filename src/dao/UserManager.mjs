@@ -1,50 +1,67 @@
 import { userModel } from "./models/user.model.mjs";
+import { createHash, isValidPassword } from "../utils.mjs";
+import UserDTO from "./dto/user.dto.mjs";
+
 
 class UserManager {
-    async addUser(user) {
-        try {
-            if (user.email == "adminCoder@coder.com") {
-                user.role = "admin";
-            }
-
-            await userModel.create(user)
-            console.log("Usuario añadido");
+    async addUser({ first_name, last_name, email, age, password, role }) {
+      try {
+        const existingUser = await userModel.findOne({ email });
     
-            return true;
-        } catch (error) {
-            return false;
+        if (existingUser) {
+          console.log("usuario existente");
+          return null;
         }
+    
+        const hashedPassword = createHash(password);
+        const user = await userModel.create({
+          first_name,
+          last_name,
+          email,
+          age,
+          password: hashedPassword,
+          role  
+        });
+    
+        console.log("ususario añadido", user);
+        return new UserDTO(user); 
+      } catch (error) {
+        console.error("Error", error);
+        throw error;
+      }
     }
-
-    async login(user) {
-        try {
-            const userLogged = await userModel.findOne({email:user}) || null;
-            
-            if (userLogged) {
-                console.log("Usuario conectado");
-                return userLogged;
-            }
-
-            return false;
-        } catch (error) {
-            return false;
+    async login(user, pass) {
+      try {
+        const userLogged = await userModel.findOne({ email: user });
+  
+        if (userLogged && isValidPassword(userLogged, pass)) {
+          return new UserDTO(userLogged); 
+      }
+        return null;
+      } catch (error) {
+        console.error("Error", error);
+        throw error;
+      }
+    }
+  
+    async restorePassword(email, hashedPassword) {
+      try {
+        const user = await userModel.findOne({ email });
+        if (!user) {
+          console.log("Usuario no encontrado");
+          return false;
         }
+  
+        user.password = hashedPassword;
+  
+        await user.save();
+  
+        console.log("Contraseña restaurada correctamente.");
+        return true;
+      } catch (error) {
+        console.error("Error", error);
+        return false;
+      }
     }
-
-    async restorePassword(user, pass) {
-        try {
-            const userLogged = await userModel.updateOne({email:user}, {password:pass}) || null;
-            
-            if (userLogged) {
-                console.log("Contraseña restaurada");
-                return userLogged;
-            }
-
-            return false;
-        } catch (error) {
-            return false;
-        }
-    }
-}
-
-export default UserManager;
+  }
+  export default UserManager;

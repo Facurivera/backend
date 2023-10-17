@@ -1,23 +1,30 @@
 const socket = io();
-const messages = document.getElementById("messages");
+document.getElementById('form').addEventListener('submit', function(e) {
+  e.preventDefault();
 
-socket.on("messages", (data) => {
-    let salida = ``;
+  var user = document.getElementById('user').value;
+  var text = document.getElementById('input').value;
 
-    data.forEach(item => {
-        salida += `<p class="card-text"><b>${item.user}:</b> <span class="fw-light">${item.message}</span></p>`;
-    });
-
-    messages.innerHTML = salida;
+  socket.emit('chat message', { user: user, text: text });
+  
+  document.getElementById('input').value = '';
+  return false;
 });
 
-const sendMessage = () => {
-    const user = document.getElementById("user");
-    const message = document.getElementById("message");
-    socket.emit("newMessage", {user:user.value, message:message.value});
-    user.value = "";
-    message.value = "";
-}
+socket.on('chat message', function(message) {
+  var messages = document.getElementById('messages');
+  var li = document.createElement('li');
+  li.textContent = `${message.user}: ${message.message}`; 
+  messages.appendChild(li);
+});
 
-const btnSendMessage = document.getElementById("btnSendMessage");
-btnSendMessage.onclick = sendMessage;
+socket.on('previous messages', function(messages) {
+  console.log('Received previous messages:', messages);
+  var messagesList = document.getElementById('messages');
+  
+  messages.forEach(function(message) {
+      var li = document.createElement('li');
+      li.textContent = `${message.user}: ${message.message}`;  
+      messagesList.appendChild(li);
+  });
+});

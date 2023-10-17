@@ -13,14 +13,13 @@ const loginUser = async () => {
             return;
         }
         const data = await response.json();
-        console.log(data);
-        
-        if (data.status === "ok") {
-            location.href = "/products";
+        if (data.status === "success") {
+          window.location.href = data.redirect;
+        } else {
+          console.log("Error", data);
         }
-    } catch(error){
-        console.error("Error en la solicitud:", error); 
-    }
-}
-
-document.getElementById("btnLogIn").onclick = loginUser;
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+    document.getElementById("btnLogIn").onclick = loginUser;

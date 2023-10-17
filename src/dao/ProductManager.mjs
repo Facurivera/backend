@@ -1,35 +1,45 @@
 import { productModel } from "./models/product.model.mjs";
+import mongoose from "mongoose";
 
 class ProductManager {
     async addProduct(product) {
         try {
-            if (await this.validateCode(product.code)) {
-                console.log("codigo existente");
-    
-                return false;
-            } else {
-                await productModel.create(product)
-                console.log("Producto agregado");
-    
-                return true;
-            }
-        } catch (error) {
+          if (await this.validateCode(product.code)) {
+            console.log("Error codigo existente");
             return false;
+          } else {
+            const producto = {
+              title: product.title,
+              description: product.description,
+              code: product.code,
+              price: product.price,
+              status: product.status,
+              stock: product.stock,
+              category: product.category,
+              thumbnails: product.thumbnails,
+            };
+            const createdProduct = await productModel.create(producto);
+            console.log("producto añadido");
+            return createdProduct;
+          }
+        } catch (error) {
+          console.error("Error no se pudo añadir", error);
+          return false;
         }
-    }
+      }
 
     async updateProduct(id, product) {
         try {
-            if (this.validateId(id)) {   
-                if (await this.getProductById(id)) {
-                    await productModel.updateOne({_id:id}, product);
-                    console.log("Producto actualizado");
-        
-                    return true;
-                }
+            const updatedProduct = await productModel.findByIdAndUpdate(id, product, {
+              new: true,
+            });
+            if (updatedProduct) {
+              console.log("Producto actualizado");
+              return true;
+            } else {
+              console.log("Producto no encontrado");
+              return false;
             }
-            
-            return false;
         } catch (error) {
             console.log("No encontrado");
     
@@ -39,57 +49,83 @@ class ProductManager {
 
     async deleteProduct(id) {
         try {
-            if (this.validateId(id)) {    
-                if (await this.getProductById(id)) {
-                    await productModel.deleteOne({_id:id});
-                    console.log("Producto eliminado");
-    
-                    return true;
-                }
+            const deletedProduct = await productModel.findByIdAndDelete(id);
+            if (deletedProduct) {
+                console.log('Producto eliminado ', deletedProduct);
+                return true;
+            } else {
+                console.log('Producto no encontrado', id);
+                return false;
             }
-
-            return false;
         } catch (error) {
-            console.log("No encontrado");
+            console.log("error");
     
             return false;
         }
     }
 
-    async getProducts(params) {
-        let {limit, page, query, sort} = params
-        limit = limit ? limit : 10;
-        page = page ? page : 1;
-        query = query || {};
-        sort = sort ? sort == "asc" ? 1 : -1 : 0;
-        let products = await productModel.paginate(query, {limit:limit, page:page, sort:{price:sort}});
-        let status = products ? "success" : "error";
+    async getProducts(params = {}) {
+        let { limit = 10, page = 1, query = {}, sort = {} } = params;
+        sort = sort ? (sort === "asc" ? { price: 1 } : { price: -1 }) : {};
 
-        let prevLink = products.hasPrevPage ? "http://localhost:8080/products?limit=" + limit + "&page=" + products.prevPage : null;
-        let nextLink = products.hasNextPage ? "http://localhost:8080/products?limit=" + limit + "&page=" + products.nextPage : null;
-        
-        products = {status:status, payload:products.docs, totalPages:products.totalPages, prevPage:products.prevPage, nextPage:products.nextPage, page:products.page, hasPrevPage:products.hasPrevPage, hasNextPage:products.hasNextPage, prevLink:prevLink, nextLink:nextLink};
+       try {  
+        let products = await productModel.paginate(query, {
+            limit: limit,
+            page: page,
+            sort: sort,
+            lean: true,
+        });
+        let status = products ? "success" : "error";
+        let prevLink = products.hasPrevPage ? "http://localhost:8000/products?limit=" + limit + "&page=" + products.prevPage : null;
+        let nextLink = products.hasNextPage ? "http://localhost:8000/products?limit=" + limit + "&page=" + products.nextPage : null;
+
+        products = {
+            status: status,
+            payload: products.docs,
+            totalPages:products.totalPages,
+            prevPage: products.prevPage,
+            nextPage: products.nextPage,
+            page: products.page,
+            hasPrevPage: products.hasPrevPage,
+            hasNextPage: products.hasNextPage,
+            prevLink: prevLink,
+            nextLink: nextLink,
+        };
 
         return products;
+    } catch (error) {
+      return {status: "error", payload: [] };
     }
+  }
 
     async getProductById(id) {
-        if (this.validateId(id)) {
-            return await productModel.findOne({_id:id}).lean() || null;
-        } else {
+        try{
+            return await productModel.findById(id).lean();
+        } catch (error) {
             console.log("No encontrado");
-            
             return null;
         }
     }
 
-    validateId(id) {
-        return id.length === 24 ? true : false;
-    }
-
-    async validateCode(code) {
-        return await productModel.findOne({code:code}) || false;
-    }
+    async validateId(id) {
+        try {
+            return await productModel.exists({ code: code });
+          } catch (error) {
+            console.error("Error", error);
+            return false;
+          }
+        }
+        async updateProduct(pid, updateData) {
+            try {
+              const updatedProduct = await productModel.findByIdAndUpdate(pid, updateData, {
+                new: true,
+              });
+              return updatedProduct ? true : false;
+            } catch (error) {
+              console.error("Error", error);
+              return false;
+            }
+          }  
 }
 
 export default ProductManager;
