@@ -8,6 +8,11 @@ class UserService {
 
   async registerUser({ first_name, last_name, email, age, password, role }) {
     try {
+      const role =
+        email == process.env.ADMIN_EMAIL &&
+        password === process.env.ADMIN_PASSWORD
+          ? "admin"
+          : "user";
       const user = await this.userManager.addUser({
         first_name,
         last_name,

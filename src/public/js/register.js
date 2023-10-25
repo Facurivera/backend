@@ -15,12 +15,10 @@ const registerUser = async () => {
       });
   
       if (!response.ok) {
-          console.error("Error", await response.text());
-      } else {
-          const data = await response.json();
-          if (data.status === "success" && data.redirect) {
-              window.location.href = data.redirect;
-          }
+        const data = await response.json();
+        if (data.status === "success" && data.redirect) {
+          window.location.href = data.redirect;
+        }
       }
     } catch (error) {
       console.error("Error", error);
