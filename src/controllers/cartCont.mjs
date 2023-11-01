@@ -13,11 +13,13 @@ class CartController {
     try {
       const newCart = await this.cartService.createCart();
       res.send(newCart);
+      req.logger.info("Cart created:", newCart);
     } catch (error) {
       res.status(500).send({
         status: "error",
         message: error.message,
       });
+      req.logger.error("Error creating cart:", error);
     }
   }
 
@@ -25,11 +27,13 @@ class CartController {
     try {
       const cart = await this.cartService.getCart(req.params.cid);
       res.send({ products: cart.products });
+      req.logger.info("Cart retrieved:", cart);
     } catch (error) {
       res.status(400).send({
         status: "error",
         message: error.message,
       });
+      req.logger.error("Error getting cart:", error);
     }
   }
 

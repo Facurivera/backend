@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2"
 
 const  productSchema = new mongoose.Schema({
+    id: Number,
     title: String,
     descripcion: String,
     price: Number,
     thumbnails: Array,
     code: String,
-    status: Boolean,
     stock: Number,
     category: String,
 });

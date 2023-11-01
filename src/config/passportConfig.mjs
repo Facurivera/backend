@@ -4,6 +4,8 @@ import { userModel } from "../dao/models/user.model.mjs";
 import { createHash, isValidPassword } from "../utils.mjs";
 import GitHubStrategy from "passport-github2";
 import jwt from "passport-jwt";
+import { ENV_CONFIG } from "./config.mjs";
+import AuthService from "../services/authServ.mjs"
 
 const LocalStrategy = local.Strategy;
 const JWTStrategy = jwt.Strategy;
@@ -26,9 +28,11 @@ const initializePassport = () => {
 
                 user = {first_name, last_name, email, age, password:createHash(password)};
 
-                if (user.email == process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+                if (user.email == ENV_CONFIG.adminEmail && password === ENV_CONFIG.adminPassword) {
+                    req.logger.info("Asignando role de admin");
                     user.role = "admin";
                 } else{
+                    req.logger.info("Asignando role de usuario");
                     user.role = "user";
                 }
 
@@ -38,6 +42,7 @@ const initializePassport = () => {
                     return done(null, result);
                 }
             } catch (error) {
+                req.logger.error("Error durante el proceso de registro:", error);
                 return done(error);
             }
         }
@@ -111,6 +116,7 @@ const cookieExtractor = (req) => {
     let token = null;
 
     if (req && req.cookies) {
+        req.logger.info("Cookies:", req.cookies);
         token = req.cookies["coderCookieToken"]
     }
 

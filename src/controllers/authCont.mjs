@@ -1,4 +1,7 @@
 import AuthService from "../services/authServ.mjs";
+import CustomError from "../services/errors/customError.mjs";
+import EErrors from "../services/errors/errors-enum.mjs";
+import { generateAuthenticationErrorInfo } from "../services/errors/messages/user-auth-error.mjs";
 
 class AuthController {
   constructor() {
@@ -8,22 +11,31 @@ class AuthController {
   async login(req, res) {
     const { email, password } = req.body;
     const userData = await this.authService.login(email, password);
+    req.logger.info("User data retrieved:", userData);
+
     if (!userData || !userData.user) {
-      return res
-        .status(401)
-        .json({ status: "error", message: "Invalid credentials" });
-    }
+      req.logger.error("Invalid credentials");
+        const customError = new CustomError({
+          name: "Authentication Error",
+          message: "Invalid credentials",
+          code: 401,
+          cause: generateAuthenticationErrorInfo(email), 
+        });
+        return next(customError);
+      }
 
     if (userData && userData.user) {
       req.session.user = {
-        id: userData.user.id || userData.user._id, 
+        id: userData.user.id || userData.user._id,
         email: userData.user.email,
-        first_name: userData.user.firstName || userData.user.first_name, 
-        last_name: userData.user.lastName || userData.user.last_name, 
+        first_name: userData.user.firstName || userData.user.first_name,
+        last_name: userData.user.lastName || userData.user.last_name,
         age: userData.user.age,
-        role: userData.user.role
-      };
+        role: userData.user.role,
+        cart: userData.user.cart 
+    };
     }
+    req.logger.info("Full user data object:", userData.user);
 
     res.cookie("coderCookieToken", userData.token, {
       httpOnly: true,

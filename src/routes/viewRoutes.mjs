@@ -2,27 +2,22 @@ import express from "express";
 import ProductManager from "../dao/ProductManager.mjs";
 import CartsManager from "../dao/CartManager.mjs";
 import CartControllers from "../controllers/cartCont.mjs"
-
-const checkSession = (req, res, next) => {
-    if (req.session && req.session.user) {
-      next();
-    } else {
-      res.redirect("/login");
-    }
-  };
-  const checkAlreadyLoggedIn = (req, res, next) => {
-    if (req.session && req.session.user) {
-      res.redirect("/profile");
-    } else {
-      next();
-    }
-  };
+import { checkAlreadyLoggedIn, checkSession } from "../middlewares/ingreso.mjs";
 
 const router = express.Router();
 const PM = new ProductManager();
 const CM = new CartsManager();
 const cartControllers = new CartControllers();
 
+async function loadUserCart(req, res, next) {
+  if (req.session && req.session.user) {
+    const cartId = req.session.user.cart;
+    const cartManager = new CartsManager();
+    const cart = await cartManager.getCart(cartId);
+    req.cart = cart;
+  }
+  next();
+}
 
 router.get("/", checkSession, async (req, res) => {
   const products = await PM.getProducts(req.query);
@@ -32,8 +27,6 @@ router.get("/", checkSession, async (req, res) => {
 router.get("/products", checkSession, async (req, res) => {
   const products = await PM.getProducts(req.query);
   const user = req.session.user;
-  
-  console.log(user);
   res.render("products", { products, user });
 });
 
@@ -47,69 +40,45 @@ router.get("/products/:pid", async (req, res) => {
   }
 });
 
-router.get("/", checkSession, async (req, res) => {
-    const products = await PM.getProducts(req.query);
-    res.render("home", { products});
-  });
+router.get("/carts", loadUserCart, async (req, res) => {
+  const cart = req.cart;
+
+  if (cart) {
+    console.log(JSON.stringify(cart, null, 4));
+    res.render("cart", { products: cart.products });
+  } else {
+    res.status(400).send({
+      status: "error",
+      message: "Error! No se encuentra el ID de Carrito!",
+    });
+  }
+});
   
-  router.get("/products", checkSession, async (req, res) => {
-    const products = await PM.getProducts(req.query);
-    const user = req.session.user;
-    
-    console.log(user);
-    res.render("products", { products, user });
-  });
-  
-  router.get("/products/:pid", async (req, res) => {
-    const pid = req.params.pid;
-    const product = await PM.getProductById(pid);
-    if (product) {
-      res.render("productDetail", { product });
-    } else {
-      res.status(404).send({ status: "error", message: "Product not found." });
-    }
-  });
-  
-  router.get("/carts/:cid", async (req, res) => {
-    const cid = req.params.cid;
-    const cart = await CM.getCart(cid);
-  
-    if (cart) {
-      console.log(JSON.stringify(cart, null, 4));
-      res.render("cart", { products: cart.products });
-    } else {
-      res.status(400).send({
-        status: "error",
-        message: "Error! No se encuentra el ID de Carrito!",
-      });
-    }
-  });
-  
-  router.post("/carts/:cid/purchase", async (req, res) => {
-    const cid = req.params.cid;
-    cartControllers.getPurchase(req, res, cid);
-  });
-  
-  router.get("/realtimeproducts", (req, res) => {
-    res.render("realTimeProducts");
-  });
-  
-  router.get("/chat", (req, res) => {
-    res.render("chat");
-  });
-  
-  router.get("/login", checkAlreadyLoggedIn, (req, res) => {
-    res.render("login");
-  });
-  
-  router.get("/register", checkAlreadyLoggedIn, (req, res) => {
-    res.render("register");
-  });
-  
-  router.get("/profile", checkSession, (req, res) => {
-    const userData = req.session.user;  
-    res.render("profile", { user: userData });
-  });
+router.post("/carts/:cid/purchase", async (req, res) => {
+  const cid = req.params.cid;
+  cartControllers.getPurchase(req, res, cid);
+});
+
+router.get("/realtimeproducts", (req, res) => {
+  res.render("realTimeProducts");
+});
+
+router.get("/chat", (req, res) => {
+  res.render("chat");
+});
+
+router.get("/login", checkAlreadyLoggedIn, (req, res) => {
+  res.render("login");
+});
+
+router.get("/register", checkAlreadyLoggedIn, (req, res) => {
+  res.render("register");
+});
+
+router.get("/profile", checkSession, (req, res) => {
+  const userData = req.session.user;  
+  res.render("profile", { user: userData });
+});
 
 router.get("/restore", async (req, res) => {
   res.render("restore");

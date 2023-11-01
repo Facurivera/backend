@@ -19,17 +19,21 @@ import { messageModel } from "./dao/models/message.model.mjs";
 import MongoStore from "connect-mongo";
 import cors from "cors";
 import DBManager from "./mongo/ds.mjs"
-import { SECRET_KEY_SESSION, PORT } from "./config/config.mjs";
+import { ENV_CONFIG } from "./config/config.mjs";
 import emailRouter from "./routes/emailRouter.mjs";
+import smsRouter from "./routes/smsRouter.mjs";
+import mockingRouter from "./mocking/mockRouter.mjs";
+import { addLogger, devLogger  } from "./config/logger.mjs";
+import loggerRouter from "./routes/loggerRouter.mjs";
 
 const app = express();
-const puerto = 8080;
+const puerto = ENV_CONFIG.port || 8000;
 app.use(cookieParser());
 initializePassport();
 app.use(passport.initialize());
 
 const httpServer = app.listen(puerto, () => {
-    console.log('servidor conectado');
+  devLogger.info("Servidor escuchando en puerto " + port);
 });
 const socketServer = new Server(httpServer);
 const PM = new ProductManager();
@@ -49,23 +53,22 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"], 
   })
 );
-
+app.use(addLogger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  session({
-    secret: process.env.SECRET_KEY_SESSION,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { 
-      secure: false,  
-    },
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_CNX_STR,
-      collectionName: "sessions"
-    }),
-  })
-);
+app.use(session({
+  secret: process.env.SECRET_KEY_SESSION,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { 
+    secure: false,  
+  },
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_CNX_STR,
+    collectionName: "sessions"
+  }),
+}));
+
 app.use(cookieParser());
 
 app.use(passport.initialize());
@@ -76,12 +79,15 @@ app.use("/api/products/", prodRouter);
 app.use("/api/carts/", cartRouter);
 app.use("/api/sessions/", sessRouter);
 app.use("/", router);
-app.use('/email', emailRouter)
+app.use('/email', emailRouter);
+app.use('/sms', smsRouter);
+app.use('/mockingproducts', mockingRouter);
+app.use("/loggerTest", loggerRouter)
 
 socketServer.on("connection", async (socket) => {
     console.log("Nueva Conexión!");
 
-    const products = await PM.getProducts();
+    const allProducts = await PM.getProducts();
     socket.emit("initial_products", allProducts.payload);
 
     const previousMessages = await messageModel.find().sort({ timestamp: 1 });

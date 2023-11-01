@@ -1,14 +1,14 @@
 import UserManager from '../dao/UserManager.mjs';
 import jwt from 'jsonwebtoken';
 import { userModel } from '../dao/models/user.model.mjs';
-import { JWT_SECRET } from '../config/config.mjs';
+import { ENV_CONFIG } from '../config/config.mjs';
 
 class AuthService {
   constructor() {
     this.userManager = new UserManager();
-    this.secretKey = JWT_SECRET;  
+    this.secretKey = ENV_CONFIG.jwtSecret;  
   }
-
+  
   async login(email, password) {
     const user = await this.userManager.login(email, password);
     if (!user) {

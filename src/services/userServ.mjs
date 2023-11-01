@@ -1,18 +1,25 @@
 import UserManager from "../dao/UserManager.mjs";
-import { ADMIN_PASSWORD, ADMIN_EMAIL } from "../config/config.mjs";
+import { ENV_CONFIG } from "../config/config.mjs";
+import CartsManager from "../dao/CartManager.mjs"
 
 class UserService {
   constructor() {
     this.userManager = new UserManager();
+    this.CartManager = new CartsManager()
   }
 
   async registerUser({ first_name, last_name, email, age, password, role }) {
     try {
-      const role =
-        email == process.env.ADMIN_EMAIL &&
-        password === process.env.ADMIN_PASSWORD
-          ? "admin"
-          : "user";
+
+      const cartResponse = await this.CartManager.newCart();
+      if (cartResponse.status !== "ok") {
+        return { status: "error", message: "Error creating cart" };
+      }
+
+      const role = email == ENV_CONFIG.adminEmail && password === ENV_CONFIG.adminPassword ? "admin" : "user";
+
+      const cartId = cartResponse.id;
+
       const user = await this.userManager.addUser({
         first_name,
         last_name,
@@ -20,6 +27,7 @@ class UserService {
         age,
         password,
         role,
+        cart: cartId,
       });
 
       if (user) {
