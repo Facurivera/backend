@@ -1,7 +1,7 @@
 import ProductService from "../services/prodServ.mjs"
 import socketServer from "../app.mjs"
 import mongoose from "mongoose";
-import CustomError from "../services/errors/CustomError.mjs";
+import CustomError from "../services/errors/messages/prod-error.mjs";
 import { generateProductErrorInfo } from "../services/errors/messages/prod-error.mjs";
 
 class ProductController {
@@ -72,6 +72,8 @@ class ProductController {
       thumbnails,
     } = req.body;
 
+    const owner = req.user._id; 
+
     if (!title) {
       res.status(400).send({
         status: "error",
@@ -139,6 +141,7 @@ class ProductController {
         stock,
         category,
         thumbnails,
+        owner,
       });
 
       if (wasAdded && wasAdded._id) {
@@ -157,6 +160,7 @@ class ProductController {
           stock,
           category,
           thumbnails,
+          owner,
         });
         return;
       } else {
@@ -244,6 +248,19 @@ class ProductController {
         });
         return;
       }
+
+      if (!req.user ||(req.user.role !== "admin" &&(!product.owner || req.user._id.toString() !== product.owner.toString()))) {
+        req.logger.error(
+          "Operación no permitida."
+        );
+        res.status(403).send({
+          status: "error",
+          message:
+            "No tiene permiso para eliminar este producto.",
+        });
+        return;
+      }
+
 
       const wasDeleted = await this.productService.deleteProduct(pid);
 

@@ -30,9 +30,7 @@ class UserManager {
         const userLogged = await userModel.findOne({ email: user });
   
         if (userLogged && isValidPassword(userLogged, pass)) {
-          const role =
-            userLogged.email === "adminCoder@coder.com" ? "admin" : "usuario";
-  
+          const role = userLogged.email === "adminCoder@coder.com" ? "admin" : "usuario";
           return userLogged;
         }
         return null;

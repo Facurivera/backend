@@ -25,6 +25,8 @@ import smsRouter from "./routes/smsRouter.mjs";
 import mockingRouter from "./mocking/mockRouter.mjs";
 import { addLogger, devLogger  } from "./config/logger.mjs";
 import loggerRouter from "./routes/loggerRouter.mjs";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUIExpress from "swagger-ui-express";
 
 const app = express();
 const puerto = ENV_CONFIG.port || 8000;
@@ -69,6 +71,22 @@ app.use(session({
   }),
 }));
 
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+
+    info: {
+      title: "Documentacion API Adoptme",
+
+      description: "Documentacion del uso de las apis relacionadas.",
+    },
+  },
+
+  apis: [`./docs/**/*.yaml`],
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
+
 app.use(cookieParser());
 
 app.use(passport.initialize());
@@ -83,6 +101,7 @@ app.use('/email', emailRouter);
 app.use('/sms', smsRouter);
 app.use('/mockingproducts', mockingRouter);
 app.use("/loggerTest", loggerRouter)
+app.use("/apidocs", swaggerUIExpress.serve, swaggerUIExpress.setup(specs));
 
 socketServer.on("connection", async (socket) => {
     console.log("Nueva Conexión!");

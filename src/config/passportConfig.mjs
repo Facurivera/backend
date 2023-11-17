@@ -12,7 +12,7 @@ const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
 
 const initializePassport = () => {
-    
+
     passport.use("register", new LocalStrategy(
         {passReqToCallback:true, usernameField:"email"},
         async (req, username, password, done) => {
@@ -31,6 +31,9 @@ const initializePassport = () => {
                 if (user.email == ENV_CONFIG.adminEmail && password === ENV_CONFIG.adminPassword) {
                     req.logger.info("Asignando role de admin");
                     user.role = "admin";
+                } else if (user.email == ENV_CONFIG.premiumEmail && password === ENV_CONFIG.premiumPassword) { 
+                    req.logger.info("Asignando role de premium");
+                    user.role = "premium";
                 } else{
                     req.logger.info("Asignando role de usuario");
                     user.role = "user";
@@ -79,7 +82,7 @@ const initializePassport = () => {
 
     passport.use("jwt", new JWTStrategy({
         jwtFromRequest:ExtractJWT.fromExtractors([cookieExtractor]),
-        secretOrKey:process.env.JWT_SECRET,
+        secretOrKey: ENV_CONFIG.jwtSecret,
     }, async(jwt_payload, done) => {
         try {
             const user = await userModel.findOne({ email: jwt_payload.email });
@@ -93,8 +96,8 @@ const initializePassport = () => {
     }));
     
     passport.use("github", new GitHubStrategy({
-        clientID: process.env.CLIENT_ID_GITHUB,
-        clientSecret: process.env.CLIENT_SECRET_GITHUB,
+        clientID: ENV_CONFIG.clientIdGithub,
+        clientSecret: ENV_CONFIG.clientSecretGithub,
         callbackURL:"http://localhost:8080/api/sessions/githubcallback"
     }, async (accessToken, refreshToken, profile, done) => {
         try {

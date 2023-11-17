@@ -7,12 +7,12 @@ const userSchema = new mongoose.Schema({
         type:String,
         unique:true
     },
-    age:Number,
-    password:String,
+    age: Number,
+    password: String,
     cart: {type: mongoose.Schema.Types.ObjectId, ref:"carts"},
-    role: {
-        type:String,
-    }
-});
+    role: String,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
+  });
 
 export const userModel = mongoose.model("users", userSchema);

@@ -3,6 +3,7 @@ import ProductManager from "../dao/ProductManager.mjs";
 import CartsManager from "../dao/CartManager.mjs";
 import CartControllers from "../controllers/cartCont.mjs"
 import { checkAlreadyLoggedIn, checkSession } from "../middlewares/ingreso.mjs";
+import { userModel } from "../dao/models/user.model.mjs"
 
 const router = express.Router();
 const PM = new ProductManager();
@@ -82,6 +83,19 @@ router.get("/profile", checkSession, (req, res) => {
 
 router.get("/restore", async (req, res) => {
   res.render("restore");
+});
+
+router.get('/reset-password/:token', async (req, res) => {
+  const { token } = req.params;
+  const user = await userModel.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() }
+  });
+
+  if (!user) {
+    return res.redirect('/restore');
+  }
+  res.render('reset-password', { token });
 });
 
 router.get("/faillogin", (req, res) => {

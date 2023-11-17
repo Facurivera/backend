@@ -2,6 +2,8 @@ import AuthService from "../services/authServ.mjs";
 import CustomError from "../services/errors/customError.mjs";
 import EErrors from "../services/errors/errors-enum.mjs";
 import { generateAuthenticationErrorInfo } from "../services/errors/messages/user-auth-error.mjs";
+import { createHash, isValidPassword } from "../utils.mjs";
+import sendResetPasswordEmail from "./reserPassCont.mjs"
 
 class AuthController {
   constructor() {
@@ -68,6 +70,69 @@ class AuthController {
       return res.redirect("/login");
     });
   }
+
+  async restorePassword(req, res) {
+    const { email } = req.body;
+    try {
+      await sendResetPasswordEmail(email);
+      res.send("Se ha enviado un enlace de restablecimiento de contraseña a tu correo electrónico.");
+    } catch (error) {
+      res
+        .status(500)
+        .send(
+          "Hubo un error al procesar tu solicitud de restablecimiento de contraseña. " + error.message);
+    }
+  }
+
+  async resetPassword(req, res) {
+    const { token } = req.params;
+    const { password, confirmPassword } = req.body;
+
+    if (password !== confirmPassword) {
+      return res.status(400).send("Las contraseñas no coinciden.");
+    }
+
+    try {
+      const user = await userModel.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() },
+      });
+
+      if (!user) {
+        return res.status(400).json({
+          message:
+            "El token de restablecimiento de contraseña es inválido o ha expirado.",
+          tokenExpired: true,
+        });
+      }
+
+      const isSamePassword = isValidPassword(user, password);
+
+      if (isSamePassword) {
+        return res
+          .status(400)
+          .send(
+            "La nueva contraseña debe ser diferente a la contraseña actual."
+          );
+      }
+
+      user.password = createHash(password);
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+
+      await user.save();
+
+      res.send("Tu contraseña ha sido actualizada con éxito.");
+    } catch (error) {
+      console.error("Error al resetear la contraseña:", error);
+      res
+        .status(500)
+        .send(
+          "Error interno del servidor al intentar actualizar la contraseña."
+        );
+    }
+  }
 }
+
 
 export default AuthController;
