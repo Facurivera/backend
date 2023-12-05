@@ -27,6 +27,7 @@ import { addLogger, devLogger  } from "./config/logger.mjs";
 import loggerRouter from "./routes/loggerRouter.mjs";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUIExpress from "swagger-ui-express";
+import usersRouter from "./routes/UserRouter.mjs";
 
 const app = express();
 const puerto = ENV_CONFIG.port || 8000;
@@ -96,6 +97,7 @@ initializePassport();
 app.use("/api/products/", prodRouter);
 app.use("/api/carts/", cartRouter);
 app.use("/api/sessions/", sessRouter);
+app.use("/api/users", usersRouter);
 app.use("/", router);
 app.use('/email', emailRouter);
 app.use('/sms', smsRouter);

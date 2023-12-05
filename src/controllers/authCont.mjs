@@ -1,5 +1,5 @@
 import AuthService from "../services/authServ.mjs";
-import CustomError from "../services/errors/customError.mjs";
+import CustomError from "../services/errors/CustomError.mjs";
 import EErrors from "../services/errors/errors-enum.mjs";
 import { generateAuthenticationErrorInfo } from "../services/errors/messages/user-auth-error.mjs";
 import { createHash, isValidPassword } from "../utils.mjs";
