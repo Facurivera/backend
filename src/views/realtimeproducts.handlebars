@@ -12,13 +12,21 @@
         <div>
             <input type="text" class="casilleros" id="price" name="Precio" placeholder="Precio del Producto...">
         </div>
-        <input type="button" class="boton" id="btnAgregarProducto" value="Agregar">
+        <input type="button" class="boton" id="submitButton" value="Agregar">
         <h2>Eliminar Productos</h2>
-        <div>
-            <input type="text" class="casilleros" id="idProduct" name="Eliminar" placeholder="Id del Producto...">
-        </div>
-        <input type="button" class="boton" id="btnEliminarProducto" value="Eliminar">
     </form>
+
+    <ul id="productList" class="realtime-products">
+        {{#each products}}
+        <li id="product-{{this._id}}" class="product">
+            <img src={{this.thumbnails}} alt={{this.title}}>
+            <span>Producto: {{this.title}} - Stock: {{this.stock}} - Descripción: {{this.description}}</span>
+            <button class="delete-button" data-id="{{this._id}}">Eliminar</button>
+            <button class="edit-button" data-id="{{this._id}}">Editar</button>
+        </li>
+        {{/each}}
+    </ul>
+
 </div>
 <script src="socket.io/socket.io.js"></script>
 <script src="/js/realTimeProducts.js"></script>

@@ -1,0 +1,39 @@
+{{> header}}
+<div class="container-forms">
+    <form id="uploadForm" action="/api/users/{{userId}}/documents" method="post" enctype="multipart/form-data">
+    <h2>subir archivos</h2>
+
+    <label for="profileImage">imagen de perfil:</label>
+    <input type="file" name="profileImage" id="profileImage" accept="image/*"><br>
+
+    <label for="productImage">imagen del producto:</label>
+    <input type="file" name="productImage" id="productImage" accept="image/*"><br>
+
+    <label for="document">documentos:</label>
+    <input type="file" name="document" id="document" accept=".pdf,.doc,.docx"><br>
+
+    <button type="submit" class="btn-uploads">subir</button>
+<div id="uploadMessage"></div>
+</form>
+
+<form id="uploadPremiumForm" action="/api/users/{{userId}}/premium-documents" method="post" enctype="multipart/form-data">
+    <h2>subir documentos premiums</h2>
+
+    <label for="identificationDocument">identificacion:</label>
+    <input type="file" name="identificationDocument" id="identificationDocument" accept="image/*,.pdf"><br>
+
+    <label for="domicileProofDocument">domicilio:</label>
+    <input type="file" name="domicileProofDocument" id="domicileProofDocument" accept="image/*,.pdf"><br>
+
+    <label for="accountStatementDocument">estado de cuenta:</label>
+    <input type="file" name="accountStatementDocument" id="accountStatementDocument" accept="image/*,.pdf"><br>
+
+    <button class="btn-uploads" type="submit">subir</button>
+<div id="uploadPremiumMessage"></div>
+</form>
+<form action="/api/users/premium/{{userId}}" method="post">
+    <div class=""><button class="btn-uploads"  type="submit">convertirse en premium</button></div>
+</form>
+</div>
+
+<script src="/js/upload.js"></script>

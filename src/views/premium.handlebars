@@ -1,0 +1,15 @@
+{{> header}}
+<form action="/api/users/premuim/{{userId}}" method="post" enctype="multipart/form-data">
+    <h2>subir archivos</h2>
+
+    <label for="profileImage">imagen del perfil:</label>
+    <input type="file" name="profiles" id="profileImage" accept="image/*"><br>
+
+    <label for="productImage">imagen del producto:</label>
+    <input type="file" name="products" id="productImage" accept="image/*"><br>
+
+    <label for="document">documentos:</label>
+    <input type="file" name="document" id="document" accept=".pdf,.doc,.docx"><br>
+
+    <button type="submit">convertirse en premium</button>
+</form>

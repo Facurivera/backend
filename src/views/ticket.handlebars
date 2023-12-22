@@ -1,0 +1,11 @@
+{{> header}}
+    <div class="ticket-container">
+       <div class="ticket-card">
+            <h1>Gracias por tu compra</h1>
+            <h1>Ticket de Compra</h1>
+            <p>Código del Ticket: {{ticket.code}}</p>
+            <p>Fecha de Compra: {{ticket.purchase_datetime}}</p>
+            <p>Monto Total: ${{ticket.amount}}</p>
+            <p>Comprador: {{ticket.purchaser}}</p>
+       </div>
+    </div>
