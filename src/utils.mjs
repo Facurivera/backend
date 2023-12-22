@@ -4,9 +4,17 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import Swal from "sweetalert2";
 
-export const createHash = (password) => {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(10)); 
+export const createHash = async (password) => {
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password, salt);
+        return hash;
+    } catch (error) {
+        console.error('Error al crear el hash:', error);
+        throw error;
+    }
 }
+
 
 export const isValidPassword = (user, password) => {
     try{

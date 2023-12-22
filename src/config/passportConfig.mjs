@@ -16,13 +16,13 @@ const initializePassport = () => {
     passport.use("register", new LocalStrategy(
         {passReqToCallback:true, emailField:"email"},
         async (req, email, password, done) => {
-            const {first_name, last_name, email, age} = req.body;
+            const {first_name, last_name, email: reqEmail, age} = req.body;
 
             try {
-                let user = await userModel.findOne({email:email});
+                let user = await userModel.findOne({email:reqEmail});
 
                 if (user) {
-                    console.log("El usuario " + email + " se encuentra registrado");
+                    req.logger.info("El usuario " + email + " se encuentra registrado");
                     return done(null, false);
                 }
 
@@ -56,7 +56,9 @@ const initializePassport = () => {
         async (email, password, done) => { 
 
         try {
-            let user = await userModel.findOne({email:email}).timeout(20000).exc();
+            let user = await userModel.findOne({email:email}).timeout(20000).exec();
+
+            req.logger.info("El usuario " + email + " se encuentra registrado");
             if (!user) {
                 return done(null, false, {message: "El usuario es inexistente"});
             }
@@ -66,7 +68,7 @@ const initializePassport = () => {
             }
             return done(null, user);
         } catch (error) {
-            return done(error);
+            req.logger.error("La contraseña es inválida");
         }
     }));
     
