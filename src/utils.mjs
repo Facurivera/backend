@@ -2,6 +2,7 @@ import {fileURLToPath} from "url";
 import {dirname} from "path";
 import bcrypt from "bcrypt";
 import passport from "passport";
+import Swal from "sweetalert2";
 
 export const createHash = (password) => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10)); 
@@ -31,6 +32,11 @@ export const authorization = (role) => {
             return res.status(401).send({status:"error", message:"no autorizado"});
         }
         if (req.user.role != role) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'rol del usuario no permitido',
+              });
             return res.status(403).send({status:"error", message:"No permitido"});
         }
         next();

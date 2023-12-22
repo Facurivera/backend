@@ -4,6 +4,7 @@ import CartsManager from "../dao/CartManager.mjs";
 import CartControllers from "../controllers/cartCont.mjs"
 import { checkAlreadyLoggedIn, checkSession } from "../middlewares/ingreso.mjs";
 import { userModel } from "../dao/models/user.model.mjs"
+import ticketCont from "../controllers/ticketCont.mjs";
 
 const router = express.Router();
 const PM = new ProductManager();
@@ -60,6 +61,21 @@ router.post("/carts/:cid/purchase", async (req, res) => {
   cartControllers.getPurchase(req, res, cid);
 });
 
+router.get("/mostrar-ticket/:ticketId", async (req, res) => {
+  const ticketId = req.params.ticketId;
+  try {
+    const ticket = await ticketController.getTicketById(ticketId);
+    if (ticket) {
+      res.render("ticket", { ticket });
+    } else {
+      res.status(404).send("Ticket no encontrado");
+    }
+  } catch (error) {
+    console.error("Error al mostrar el ticket:", error);
+    res.status(500).send("Error interno del servidor");
+  }
+});
+
 router.get("/realtimeproducts", (req, res) => {
   res.render("realTimeProducts");
 });
@@ -110,5 +126,22 @@ router.get("/failregister", async (req, res) => {
     status: "Error",
     message: "Error! No se pudo registar el Usuario!",
   });
+});
+
+router.get("/upload/:uid", (req, res) => {
+  const userId = req.params.uid;
+  console.log("UserID:", userId);
+  res.render("uploads", { userId });
+});
+
+router.get("/premium/:uid", (req, res) => {
+  const userId = req.params.uid;
+  console.log("UserID:", userId);
+  res.render("premium", { userId });
+});
+
+router.get("/adminController", async (req, res) => {
+  const users = await userModel.find();
+  res.render("adminController", { users });
 });
 export default router;

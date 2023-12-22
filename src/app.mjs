@@ -8,8 +8,6 @@ import router from "./routes/viewRoutes.mjs";
 import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access'
 import { Server } from "socket.io";
 import ProductManager from "./dao/ProductManager.mjs";
-import ChatManager from "./dao/chatManager.mjs";
-import mongoose from "mongoose";
 import passport from "passport";
 import session from "express-session";
 import sessRouter from "./routes/sessionRoutes.mjs";
@@ -18,7 +16,6 @@ import cookieParser from "cookie-parser";
 import { messageModel } from "./dao/models/message.model.mjs";
 import MongoStore from "connect-mongo";
 import cors from "cors";
-import DBManager from "./mongo/ds.mjs"
 import { ENV_CONFIG } from "./config/config.mjs";
 import emailRouter from "./routes/emailRouter.mjs";
 import smsRouter from "./routes/smsRouter.mjs";
@@ -28,6 +25,7 @@ import loggerRouter from "./routes/loggerRouter.mjs";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUIExpress from "swagger-ui-express";
 import usersRouter from "./routes/UserRouter.mjs";
+import paymentsRouter from "./routes/paymentsRouter.mjs";
 
 const app = express();
 const puerto = ENV_CONFIG.port || 8000;
@@ -36,11 +34,10 @@ initializePassport();
 app.use(passport.initialize());
 
 const httpServer = app.listen(puerto, () => {
-  devLogger.info("Servidor escuchando en puerto " + port);
+  devLogger.info("Servidor escuchando en puerto " + puerto);
 });
 const socketServer = new Server(httpServer);
 const PM = new ProductManager();
-const CTM = new ChatManager();
 
 app.set("socketServer", socketServer);
 
@@ -104,6 +101,7 @@ app.use('/sms', smsRouter);
 app.use('/mockingproducts', mockingRouter);
 app.use("/loggerTest", loggerRouter)
 app.use("/apidocs", swaggerUIExpress.serve, swaggerUIExpress.setup(specs));
+app.use("/payment", paymentsRouter)
 
 socketServer.on("connection", async (socket) => {
     console.log("Nueva Conexión!");

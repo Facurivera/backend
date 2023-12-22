@@ -1,3 +1,4 @@
-export const generateProductErrorInfo = (productId) => {
+const generateProductErrorInfo = (productId) => {
     return `Error al procesar el producto con ID: ${productId}`;
 };
+export default generateProductErrorInfo

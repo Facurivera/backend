@@ -20,7 +20,20 @@ class TicketController {
         throw error;  
     }
 }
+async getTicketById(ticketId) {
+    try {
+      const ticket = await this.ticketService.getTicketById(ticketId);
 
+      if (!ticket) {
+        throw new Error("Ticket no encontrado");
+      }
+
+      return ticket;
+    } catch (error) {
+      console.error("Error al obtener el ticket:", error);
+      throw error;
+    }
+  }
 }
 
 export default new TicketController();

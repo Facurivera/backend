@@ -3,10 +3,12 @@ import CartManager from "../dao/CartManager.mjs";
 import { authorization, passportCall } from "../utils.mjs";
 import CartController from "../controllers/cartCont.mjs";
 import { userModel } from "../dao/models/user.model.mjs";
+import Stripe from "stripe";
 
 const cartsRouter = Router();
 const CM = new CartManager();
 const cartControllers = new CartController();
+const stripe = new Stripe("sk_test_51OPr90IX8JoJOR4pnDULtQAnLpP7gJAAQVj21F4aP7W1DS2rCgwvW7wNpG4okAmTegR9TJ9hcjQemBSzn0DIBQht006Kc3brH6");
 
 cartsRouter.post("/", cartControllers.createCart.bind(cartControllers));
 

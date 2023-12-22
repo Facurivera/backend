@@ -14,14 +14,30 @@ const registerUser = async () => {
         body: JSON.stringify(user),
       });
   
-      if (!response.ok) {
+      if (response.ok) {
         const data = await response.json();
         if (data.status === "success" && data.redirect) {
           window.location.href = data.redirect;
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "usuario existente",
+          });
         }
+      } else {
+        Swal.fire({
+          icon: "Error",
+          title: "Oops...",
+          text: "usuario existente",
+        });
       }
     } catch (error) {
-      console.error("Error", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "error durante el registro",
+      });
     }
   };
   

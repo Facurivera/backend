@@ -75,3 +75,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+const eliminarProductoDelCarrito = async (pid) => {
+  try {
+    const cid = await obtenerIdCarrito();
+
+    const response = await fetch(`/api/carts/${cid}/products/${pid}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al eliminar el producto del carrito.");
+    }
+
+    console.log("Producto eliminado del carrito");
+  } catch (error) {
+    console.error("Error al eliminar el producto del carrito: " + error);
+  }
+};

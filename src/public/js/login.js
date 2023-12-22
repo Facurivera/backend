@@ -8,18 +8,25 @@ const loginUser = async () => {
             headers: {"Content-type": "application/json; charset=UTF-8"},
             body: JSON.stringify({email:email, pass:password})
         });
-        if (!response.ok || response.headers.get("Content-Type") !== "application/json; charset=UTF-8") {
-            console.error("Error en la respuesta del servidor");
-            return;
-        }
+        
         const data = await response.json();
-        if (data.status === "success") {
-          window.location.href = data.redirect;
+        
+        if (response.ok && data.status === "success") {
+        window.location.href = data.redirect;
         } else {
           console.log("Error", data);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'credencial invalida',
+          });
         }
       } catch (error) {
-        console.log("error", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'credencial invalida',
+        });
       }
     };
     document.getElementById("btnLogIn").onclick = loginUser;
