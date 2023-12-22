@@ -9,7 +9,12 @@ export const createHash = (password) => {
 }
 
 export const isValidPassword = (user, password) => {
-    return bcrypt.compareSync(password, user.password);
+    try{
+        return bcrypt.compareSync(password, user.password);
+    }catch (error){
+        console.error('error al comparar contraseñas', error)
+        return false;
+    }
 }
 
 export const passportCall = (strategy) => {

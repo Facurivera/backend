@@ -14,12 +14,12 @@ const ExtractJWT = jwt.ExtractJwt;
 const initializePassport = () => {
 
     passport.use("register", new LocalStrategy(
-        {passReqToCallback:true, usernameField:"email"},
-        async (req, username, password, done) => {
+        {passReqToCallback:true, emailField:"email"},
+        async (req, email, password, done) => {
             const {first_name, last_name, email, age} = req.body;
 
             try {
-                let user = await userModel.findOne({email:username});
+                let user = await userModel.findOne({email:email});
 
                 if (user) {
                     console.log("El usuario " + email + " se encuentra registrado");
@@ -52,14 +52,13 @@ const initializePassport = () => {
     ));
 
     passport.use("login", new LocalStrategy(
-        { usernameField: "email", passwordField: "password" },
-        async (username, password, done) => { 
+        { emailField: "email", passwordField: "password" },
+        async (email, password, done) => { 
 
         try {
-            let user = await userModel.findOne({email:username});
+            let user = await userModel.findOne({email:email}).timeout(20000).exc();
             if (!user) {
-                console.log("El usuario es inexistente");
-                return done(null, false);
+                return done(null, false, {message: "El usuario es inexistente"});
             }
             if (!isValidPassword(user, password)) {
                 console.log("La contraseña es inválida");
