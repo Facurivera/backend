@@ -11,6 +11,7 @@ const loginUser = async () => {
         
         const data = await response.json();
         
+        
         if (response.ok && data.status === "success") {
         window.location.href = data.redirect;
         } else {
