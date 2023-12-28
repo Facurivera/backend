@@ -10,7 +10,7 @@ class AuthController {
     this.authService = new AuthService();
   }
 
-  async login(req, res) {
+  async login(req, res, next) {
     const { email, password } = req.body;
     const userData = await this.authService.login(email, password);
     req.logger.info("User data retrieved:", userData);
