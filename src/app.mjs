@@ -16,6 +16,7 @@ import cookieParser from "cookie-parser";
 import { messageModel } from "./dao/models/message.model.mjs";
 import MongoStore from "connect-mongo";
 import DBManager from "./mongo/ds.mjs"
+import mongoose from "mongoose";
 import cors from "cors";
 import { ENV_CONFIG } from "./config/config.mjs";
 import emailRouter from "./routes/emailRouter.mjs";
