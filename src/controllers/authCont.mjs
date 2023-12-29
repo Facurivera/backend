@@ -53,6 +53,7 @@ class AuthController {
         .status(200)
         .json({ status: "success", user: userData.user, redirect: "/products" 
       });
+      
   } catch (error) {
     return next(error)
   }

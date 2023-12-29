@@ -15,7 +15,7 @@ const UM = new UserManager();
 const userController = new UserController();
 const authController = new AuthController();
 
-sessRouter.post("/login", (req, res) => authController.login(req, res));
+sessRouter.post("/login", (req, res, next) => authController.login(req, res, next));
 
 sessRouter.post("/register", userController.register.bind(userController));
 
