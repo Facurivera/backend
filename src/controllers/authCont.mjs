@@ -11,43 +11,53 @@ class AuthController {
   }
 
   async login(req, res, next) {
-    const { email, password } = req.body;
-    const userData = await this.authService.login(email, password);
-    req.logger.info("User data retrieved:", userData);
+    try{
+      const { email, password } = req.body;
+      const userData = await this.authService.login(email, password);
+      req.logger.info("User data retrieved:", userData);
 
-    if (!userData || !userData.user) {
-      req.logger.error("Invalid credentials");
-        const customError = new CustomError({
-          name: "Authentication Error",
-          message: "Invalid credentials",
-          code: 401,
-          cause: generateAuthenticationErrorInfo(email), 
-        });
-        return next(customError);
+      userData.user.last_connection = new Date();
+      await userData.user.save();
+
+      if (!userData || !userData.user) {
+        req.logger.error("Invalid credentials");
+          const customError = new CustomError({
+            name: "Authentication Error",
+            message: "Invalid credentials",
+            code: 401,
+            cause: generateAuthenticationErrorInfo(email), 
+          });
+          return next(customError);
+        }
+
+      if (userData && userData.user) {
+        req.session.user = {
+          id: userData.user.id || userData.user._id,
+          email: userData.user.email,
+          first_name: userData.user.firstName || userData.user.first_name,
+          last_name: userData.user.lastName || userData.user.last_name,
+          age: userData.user.age,
+          role: userData.user.role,
+          cart: userData.user.cart 
+        };
       }
+      
+      req.logger.info("Full user data object:", userData.user);
 
-    if (userData && userData.user) {
-      req.session.user = {
-        id: userData.user.id || userData.user._id,
-        email: userData.user.email,
-        first_name: userData.user.firstName || userData.user.first_name,
-        last_name: userData.user.lastName || userData.user.last_name,
-        age: userData.user.age,
-        role: userData.user.role,
-        cart: userData.user.cart 
-    };
-    }
-    req.logger.info("Full user data object:", userData.user);
+      res.cookie("coderCookieToken", userData.token, {
+        httpOnly: true,
+        secure: false,
+      });
 
-    res.cookie("coderCookieToken", userData.token, {
-      httpOnly: true,
-      secure: false,
-    });
-
-    return res
-      .status(200)
-      .json({ status: "success", user: userData.user, redirect: "/products" });
+      return res
+        .status(200)
+        .json({ status: "success", user: userData.user, redirect: "/products" 
+      });
+  } catch (error) {
+    return next(error)
   }
+}
+
   async githubCallback(req, res) {
     try {
       if (req.user) {
@@ -75,12 +85,12 @@ class AuthController {
     const { email } = req.body;
     try {
       await sendResetPasswordEmail(email);
-      res.send("Se ha enviado un enlace de restablecimiento de contraseña a tu correo electrónico.");
+      res.send("Se ha enviado un enlace a tu correo electrónico para restablecer su contraseña");
     } catch (error) {
       res
         .status(500)
         .send(
-          "Hubo un error al procesar tu solicitud de restablecimiento de contraseña. " + error.message);
+          "Hubo un error al procesar tu solicitud" + error.message);
     }
   }
 
@@ -112,7 +122,7 @@ class AuthController {
         return res
           .status(400)
           .send(
-            "La nueva contraseña debe ser diferente a la contraseña actual."
+            "La nueva contraseña debe ser diferente"
           );
       }
 
@@ -122,13 +132,13 @@ class AuthController {
 
       await user.save();
 
-      res.send("Tu contraseña ha sido actualizada con éxito.");
+      res.send("Tu contraseña ha sido actualizada");
     } catch (error) {
       console.error("Error al resetear la contraseña:", error);
       res
         .status(500)
         .send(
-          "Error interno del servidor al intentar actualizar la contraseña."
+          "Error al intentar actualizar la contraseña."
         );
     }
   }
