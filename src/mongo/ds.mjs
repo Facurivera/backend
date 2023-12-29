@@ -5,7 +5,7 @@ import { devLogger } from '../config/logger.mjs';
 
 class DBManager {
   constructor() {
-    if (ENV_CONFIG.persistence === 'MONGO') {
+    if (ENV_CONFIG.persistence === "MONGO") {
       this.connectToMongoDB();
     } else {
       this.contacts = [];  
