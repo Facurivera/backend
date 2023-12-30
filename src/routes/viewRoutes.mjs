@@ -23,7 +23,7 @@ async function loadUserCart(req, res, next) {
 
 router.get("/", checkSession, async (req, res) => {
   const products = await PM.getProducts(req.query);
-  res.render("home", { products});
+  res.render("index", { products});
 });
 
 router.get("/products", checkSession, async (req, res) => {
