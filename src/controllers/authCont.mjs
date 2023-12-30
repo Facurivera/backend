@@ -15,13 +15,12 @@ class AuthController {
       const { email, password } = req.body;
       const userData = await this.authService.login(email, password);
       req.logger.info("User data retrieved:", userData);
-
-      userData.user.last_connection = new Date();
       
-      try {
+      if (userData && userData.user) {
+        userData.user.last_connection = new Date();
         await userData.user.save();
-      } catch (error) {
-        req.logger.error("Error saving user data:", error);
+      } else {
+        console.error("userData o userData.user es null o undefined");
       }
       
       if (!userData || !userData.user) {
