@@ -15,9 +15,9 @@ export const sendSMS = async (req, res) => {
   try {
     const result = await twilioClient.messages.create(twilioSMSOptions);
     res.send({ message: "Success!", payload: result });
-  } catch (error) {
-    console.error("Error sending SMS:", error);
-    res.status(500).send({ error: error.message });
-  }
-  
+} catch (error) {
+  console.error("Error sending SMS:", error);
+  res.status(500).send({ error: error.message });
+}
+
 };
