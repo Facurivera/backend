@@ -3,17 +3,16 @@
 <div class="">
     <h1 class="sub-titulo">Agregar Productos</h1>
     <form method="post" action="/prods" class="formulario">
-        <div>
-            <input type="text" class="casilleros" id="thumbnails" name="Url" placeholder="URL del Producto...">
-        </div>
-        <div>
-            <input type="text" class="casilleros" id="title" name="Producto" placeholder="Nombre del Producto...">
-        </div>
-        <div>
-            <input type="text" class="casilleros" id="price" name="Precio" placeholder="Precio del Producto...">
-        </div>
-        <input type="button" class="boton" id="submitButton" value="Agregar">
-        <h2>Eliminar Productos</h2>
+        <input type="text" class="casilleros" id="thumbnails" name="Url" placeholder="URL del Producto..." required>
+        <input type="text" class="casilleros" id="title" name="Producto" placeholder="Nombre del Producto..." required>
+        <input type="number" class="casilleros" id="price" name="Precio" placeholder="Precio del Producto..." required>
+        <input type="text" class="casilleros" id="description" name="description" placeholder="Descripción..." required>
+        <input type="number" class="casilleros" id="code" name="code" placeholder="Código..." required>
+        <input type="number" class="casilleros" id="stock" name="stock" placeholder="Stock..." required>
+
+
+
+        <button class="boton" id="submitButton">Agregar</button>
     </form>
 
     <ul id="productList" class="realtime-products">
@@ -30,3 +29,4 @@
 </div>
 <script src="socket.io/socket.io.js"></script>
 <script src="/js/realTimeProducts.js"></script>
+<script src="/js/cart.js"></script>

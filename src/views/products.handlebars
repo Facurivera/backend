@@ -5,10 +5,9 @@
         {{#each products.payload}}
         <div class="prod">
             <img class="img" src="{{this.thumbnails}}" alt="{{this.title}}"><br>
-            <p class="detail">Nombre : <b>{{this.title}}</b><br>
-            Precio: <b>${{this.price}}</b><br>
-            </p>
-            <button class="boton" onclick="agregarProductoAlCarrito('{{product._id}}')">Agregar</button>
+            <a href="/products/{{this._id}}" class="detail"><b>{{this.title}}</b></a>
+            <p class="detail">Precio: <b>${{this.price}}</b><br></p>
+            <button class="boton" onclick="agregarProductoAlCarrito('{{this._id}}')">Agregar</button>
         </div>
     {{/each}}
 </div>

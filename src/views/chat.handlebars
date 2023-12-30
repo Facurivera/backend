@@ -2,14 +2,13 @@
 
 <main>
     <h1 class="sub-titulo">Mongo DB Chat</h1>
-    <div class="mensajeria">
-        <div class="">
-            <input type="text" class="casilleros" id="user" placeholder="usuario">
-        </div>
-        <div class="">
-            <input type="text" class="casilleros" id="message" placeholder="mensaje">
-        </div>
-        <button type="button" class="boton" id="btnSendMessage">Enviar</button>    
+    <div id="chat">
+        <form id="form" action="" class="form-chat">
+            <input id="user" autocomplete="off" placeholder="Nombre" />
+            <input id="input" autocomplete="off" placeholder="Mensaje..." />
+            <button>Enviar</button>
+            <ul id="messages"></ul>
+        </form>
     </div>
 </main>
 
