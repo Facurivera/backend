@@ -43,7 +43,7 @@ const mongoUrl = ENV_CONFIG.mongoUrl;
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 20000, 
+  serverSelectionTimeoutMS: 60000, 
 })
 .then(() => console.log('Conectado a MongoDB'))
 .catch(err => console.error('Error al conectar a MongoDB', err));
