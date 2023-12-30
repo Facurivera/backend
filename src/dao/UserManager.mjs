@@ -5,12 +5,14 @@ import UserDTO from "./dto/user.dto.mjs";
 class UserManager {
   async addUser({ first_name, last_name, email, age, password, role, cart}) {
     try {
+      console.log("Antes de buscar usuario existente en la base de datos");
       const existingUser = await userModel.findOne({ email });
-
+      console.log("Después de buscar usuario existente en la base de datos", existingUser);
+            
       if (existingUser) {
-        return null;
+        return { status: "user_exists", message: "El usuario ya existe" };
       }
-      const hashedPassword = createHash(password);
+      const hashedPassword = await createHash(password);
       const user = await userModel.create({
         first_name,
         last_name,
@@ -22,6 +24,7 @@ class UserManager {
       });
       return user;
     } catch (error) {
+      console.error("Error durante el registro del usuario:", error);
       throw error;
       }
     }

@@ -42,6 +42,7 @@ const initializePassport = () => {
                 let result = await userModel.create(user);
 
                 if (result) {
+                    req.logger.info("Usuario creado exitosamente:", result);
                     return done(null, result);
                 }
             } catch (error) {
