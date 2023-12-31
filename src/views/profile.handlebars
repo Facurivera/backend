@@ -1,16 +1,13 @@
 {{> header}}
 <div class="portada">
-    <h1>Perfil</h1>
-    <div class="">
-      <div class="">
-        <h1>Bienvenido, {{user.first_name}} {{user.last_name}}!</h1>
-        <p>Tu correo electrónico es: {{user.email}}</p>
-        <p>Tu rol es: {{user.role}}</p>
-      </div>
-      <form action="/api/sessions/logout" method="POST">
-        <button type="submit" class="">Cerrar Sesión</button>
-      </form>
+    <div>
+      <h1>Bienvenido, {{user.first_name}} {{user.last_name}}!</h1>
+      <p class="text-perf">Tu correo electrónico es: {{user.email}}</p>
+      <p class="text-perf">Tu rol es: {{user.role}}</p>
     </div>
+    <form action="/api/sessions/logout" method="POST">
+      <button type="submit" class="boton">Cerrar Sesión</button>
+    </form>
 </div>
     
 <script src="/js/cart.js"></script>
