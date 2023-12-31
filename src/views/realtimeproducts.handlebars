@@ -29,10 +29,10 @@
         <ul id="productList" class="realtime-prod">
             {{#each products}}
             <li id="product-{{this._id}}" class="product">
-                <img src={{this.thumbnails}} alt={{this.title}} class="img">
+                <img class="img" src={{this.thumbnails}} alt={{this.title}} >
                 <span>Producto: {{this.title}} - Stock: {{this.stock}} - Descripción: {{this.description}}</span>
-                <button class="delete-button" data-id="{{this._id}}">Eliminar</button>
-                <button class="edit-button" data-id="{{this._id}}">Editar</button>
+                <button class="boton" data-id="{{this._id}}">Eliminar</button>
+                <button class="boton" data-id="{{this._id}}">Editar</button>
             </li>
             {{/each}}
         </ul>
