@@ -10,15 +10,15 @@
         </div>
     </nav>
 </header>
-<div class="">
-    <div class="">
-        <img src="{{product.thumbnails}}" alt="{{product.title}}" class="img-fluid">
+<div class="prod-details">
+    <div >
+        <img src="{{product.thumbnails}}" alt="{{product.title}}" class="img">
     </div>
-    <div class="">
-        <h1 class="">{{product.title}}</h1>
-        <p class="">${{product.price}}</p>
-        <p class="">{{product.description}}</p>
-        <p><button class="" onclick="agregarProductoAlCarrito('{{product._id}}')">Agregar</button></p>
+    <div>
+        <h1>{{product.title}}</h1>
+        <p>${{product.price}}</p>
+        <p>{{product.category}}</p>
+        <p><button class="boton" onclick="agregarProductoAlCarrito('{{product._id}}')">Agregar</button></p>
 
     </div>
 </div>

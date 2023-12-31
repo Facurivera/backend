@@ -30,7 +30,7 @@
             {{#each products}}
             <li id="product-{{this._id}}" class="product">
                 <img class="img" src={{this.thumbnails}} alt={{this.title}} >
-                <span>Producto: {{this.title}} - Stock: {{this.stock}} - Descripción: {{this.description}}</span>
+                <span>Producto: {{this.title}} - Stock: {{this.stock}} - Categoria: {{this.category}}</span>
                 <button class="boton" data-id="{{this._id}}">Eliminar</button>
                 <button class="boton" data-id="{{this._id}}">Editar</button>
             </li>
