@@ -1,25 +1,23 @@
 <header class="header">
-    <nav></nav>
         <h1 class="titulo">Bienvenidos a nuestra pagina web !!!</h1>
-    </nav>
 </header>
+<main>
+    <div class="portada">
+        <h1>Iniciar Sesion</h1>
+        <form class="user-formulario">
+            <div>
+                <input type="text" class="casilleros user-cas" id="email" placeholder="Email...">
+            </div>
+            <div>
+                <input type="password" class="casilleros user-cas" id="password" placeholder="Contraseña...">
+            </div>
+            <button type="button" class="boton" id="btnLogIn">Iniciar</button>
+            <h2 style="text-align: center;">O</h2>
+            <a href="/register" type="button" class="boton redirrecion" >Registrate</a>
+            <a href="/api/sessions/github" class="boton redirrecion"><b>Loguearme con GitHub</b></a>
+            <a href="/restore" class="boton redirrecion"><b>has olvidado tu Contraseña</b></a>
 
-<div class="portada">
-    <h1>Iniciar Sesion</h1>
-    <form class="user-formulario">
-        <div>
-            <input type="text" class="casilleros user-cas" id="email" placeholder="Email...">
-        </div>
-        <div>
-            <input type="password" class="casilleros user-cas" id="password" placeholder="Contraseña...">
-        </div>
-        <button type="button" class="boton" id="btnLogIn">Iniciar</button>
-        <h2 style="text-align: center;">O</h2>
-        <a href="/register" type="button" class="boton redirrecion" >Registrate</a>
-        <a href="/api/sessions/github" class="boton redirrecion"><b>Loguearme con GitHub</b></a>
-        <a href="/restore" class="boton redirrecion"><b>has olvidado tu Contraseña</b></a>
-
-    </form>
-</div>
-
+        </form>
+    </div>
+</main>
 <script src="/js/login.js"></script>

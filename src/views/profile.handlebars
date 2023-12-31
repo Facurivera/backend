@@ -1,13 +1,25 @@
-{{> header}}
-<div class="portada">
-    <div>
-      <h1>Bienvenido, {{user.first_name}} {{user.last_name}}!</h1>
-      <p class="text-perf">Tu correo electrónico es: {{user.email}}</p>
-      <p class="text-perf">Tu rol es: {{user.role}}</p>
-    </div>
-    <form action="/api/sessions/logout" method="POST">
-      <button type="submit" class="boton">Cerrar Sesión</button>
-    </form>
-</div>
-    
+<header class="header">
+    <nav>
+        <h1 class="titulo">Perfil</h1>
+        <div class="enlaces">
+            <a href="../products" class="enlace">productos</a>            
+            <a href="../carts" class="enlace">carrito</a>
+            <a href="../realtimeproducts" class="enlace">realtimeproducts</a>
+            <a href="../chat" class="enlace">chat</a>
+            <a href="../profile" class="enlace">perfil</a>
+        </div>
+    </nav>
+</header>
+<main>
+  <div class="portada">
+      <div>
+        <h1>Bienvenido, {{user.first_name}} {{user.last_name}}!</h1>
+        <p class="text-perf">Tu correo electrónico es: {{user.email}}</p>
+        <p class="text-perf">Tu rol es: {{user.role}}</p>
+      </div>
+      <form action="/api/sessions/logout" method="POST">
+        <button type="submit" class="boton">Cerrar Sesión</button>
+      </form>
+  </div>
+</main>    
 <script src="/js/cart.js"></script>

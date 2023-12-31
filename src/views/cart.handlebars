@@ -1,17 +1,30 @@
-{{> header}}
-<div class="carrito">
-    <ul>
-        {{#each products}}
-            <li class="list-prod">
-                <img src="{{this.product.thumbnails}}" alt="{{this.product.title}}" class="carrito-img">
-                <p class="carrito-text">{{this.product.title}}</p>
-                <p class="carrito-text">${{this.product.price}}</p>
-                <button class="boton carrito-boton" onclick="eliminarProductoDelCarrito('{{this.product._id}}')">Eliminar</button>
-            </li>
-        {{/each}}
-    </ul>
-    <button id="payment" class="boton">Pagar</button>
-</div>
+<header class="header">
+    <nav>
+        <h1 class="titulo">Carrito de Compras</h1>
+        <div class="enlaces">
+            <a href="../products" class="enlace">productos</a>            
+            <a href="../carts" class="enlace">carrito</a>
+            <a href="../realtimeproducts" class="enlace">realtimeproducts</a>
+            <a href="../chat" class="enlace">chat</a>
+            <a href="../profile" class="enlace">perfil</a>
+        </div>
+    </nav>
+</header>
+<main>
+    <div class="carrito">
+        <ul>
+            {{#each products}}
+                <li class="list-prod">
+                    <img src="{{this.product.thumbnails}}" alt="{{this.product.title}}" class="carrito-img">
+                    <p class="carrito-text">{{this.product.title}}</p>
+                    <p class="carrito-text">${{this.product.price}}</p>
+                    <button class="boton carrito-boton" onclick="eliminarProductoDelCarrito('{{this.product._id}}')">Eliminar</button>
+                </li>
+            {{/each}}
+        </ul>
+        <button id="payment" class="boton">Pagar</button>
+    </div>
+</main>
 
 <script src="/js/cart.js"></script>
 <script src="/js/payment.js"></script>

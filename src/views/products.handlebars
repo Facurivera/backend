@@ -1,43 +1,56 @@
-{{> header}}
-<div>
-    <h1>Productos:</h1>
-    <div class="container">
-        {{#each products.payload}}
-        <div class="prod">
-            <img class="img" src="{{this.thumbnails}}" alt="{{this.title}}"><br>
-            <a href="/products/{{this._id}}" class="detail"><b>{{this.title}}</b></a>
-            <p class="detail">Precio: <b>${{this.price}}</b><br></p>
-            <button class="boton" onclick="agregarProductoAlCarrito('{{this._id}}')">Agregar</button>
+<header class="header">
+    <nav>
+        <h1 class="titulo">Lista de productos</h1>
+        <div class="enlaces">
+            <a href="../products" class="enlace">productos</a>            
+            <a href="../carts" class="enlace">carrito</a>
+            <a href="../realtimeproducts" class="enlace">realtimeproducts</a>
+            <a href="../chat" class="enlace">chat</a>
+            <a href="../profile" class="enlace">perfil</a>
         </div>
-    {{/each}}
-</div>
-<div>
-    <nav class="paginado">
-        {{#if products.hasPrevPage}}
-            <div class="page-item">
-                <a class="link" href="{{products.prevLink}}"><<</a>
-            </div>
-        {{/if}}
-        {{#if products.hasPrevPage}}
-            <div class="page-item">
-                <a class="link" href="{{products.prevLink}}">{{products.prevPage}}</a>
-            </div>    
-        {{/if}}
-            <div class="page-item">
-                <a class="link">{{products.page}}</a>
-            </div>
-        {{#if products.hasNextPage}}
-            <div class="page-item">
-                <a class="link" href="{{products.nextLink}}">{{products.nextPage}}</a>
-            </div>    
-        {{/if}}
-        {{#if products.hasNextPage}}
-            <div class="page-item">
-                <a class="link" href="{{products.nextLink}}">>></a>
-            </div>
-        {{/if}}
     </nav>
-</div>
+</header>
+<main>
+    <div>
+        <h1>Productos:</h1>
+        <div class="container">
+            {{#each products.payload}}
+            <div class="prod">
+                <img class="img" src="{{this.thumbnails}}" alt="{{this.title}}"><br>
+                <a href="/products/{{this._id}}" class="detail"><b>{{this.title}}</b></a>
+                <p class="detail">Precio: <b>${{this.price}}</b><br></p>
+                <button class="boton" onclick="agregarProductoAlCarrito('{{this._id}}')">Agregar</button>
+            </div>
+        {{/each}}
+    </div>
+    <div>
+        <nav class="paginado">
+            {{#if products.hasPrevPage}}
+                <div class="page-item">
+                    <a class="link" href="{{products.prevLink}}"><<</a>
+                </div>
+            {{/if}}
+            {{#if products.hasPrevPage}}
+                <div class="page-item">
+                    <a class="link" href="{{products.prevLink}}">{{products.prevPage}}</a>
+                </div>    
+            {{/if}}
+                <div class="page-item">
+                    <a class="link">{{products.page}}</a>
+                </div>
+            {{#if products.hasNextPage}}
+                <div class="page-item">
+                    <a class="link" href="{{products.nextLink}}">{{products.nextPage}}</a>
+                </div>    
+            {{/if}}
+            {{#if products.hasNextPage}}
+                <div class="page-item">
+                    <a class="link" href="{{products.nextLink}}">>></a>
+                </div>
+            {{/if}}
+        </nav>
+    </div>
+</main>
 
 <script src="/js/cart.js"></script>
 <script src="/js/products.js"></script>
