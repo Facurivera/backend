@@ -1,38 +1,55 @@
-<div class="container-forms">
-    <form id="uploadForm" action="/api/users/{{userId}}/documents" method="post" enctype="multipart/form-data">
-    <h2>subir archivos</h2>
+<header class="header">
+    <nav>
+        <h1 class="titulo">Subir archivos</h1>
+        <div class="enlaces">
+            <a href="/products" class="enlace">productos</a>            
+            <a href="/carts" class="enlace">carrito</a>
+            <a href="/realtimeproducts" class="enlace">realtimeproducts</a>
+            <a href="/chat" class="enlace">chat</a>
+            <a href="/profile" class="enlace">perfil</a>
+        </div>
+    </nav>
+</header>
+<main>
+    <div class="div-upd">
+        <form class="formulario-upd" id="uploadForm" action="/api/users/{{userId}}/documents" method="post" enctype="multipart/form-data">
+            <h2>subir archivos</h2>
+            <div class="uploads">
+                <label for="profileImage">imagen de perfil:</label>
+                <input class="casilleros" type="file" name="profileImage" id="profileImage" accept="image/*"><br>
+            </div>
+            <div class="uploads">
+                <label for="productImage">imagen del producto:</label>
+                <input class="casilleros" type="file" name="productImage" id="productImage" accept="image/*"><br>
+            </div>
+            <div class="uploads">
+                <label for="document">documentos:</label>
+                <input class="casilleros" type="file" name="document" id="document" accept=".pdf,.doc,.docx"><br>
+            </div>
+            <button type="submit" class="btn-uploads">subir</button>
+    <div id="uploadMessage"></div>
+    </form>
 
-    <label for="profileImage">imagen de perfil:</label>
-    <input type="file" name="profileImage" id="profileImage" accept="image/*"><br>
-
-    <label for="productImage">imagen del producto:</label>
-    <input type="file" name="productImage" id="productImage" accept="image/*"><br>
-
-    <label for="document">documentos:</label>
-    <input type="file" name="document" id="document" accept=".pdf,.doc,.docx"><br>
-
-    <button type="submit" class="btn-uploads">subir</button>
-<div id="uploadMessage"></div>
-</form>
-
-<form id="uploadPremiumForm" action="/api/users/{{userId}}/premium-documents" method="post" enctype="multipart/form-data">
-    <h2>subir documentos premiums</h2>
-
-    <label for="identificationDocument">identificacion:</label>
-    <input type="file" name="identificationDocument" id="identificationDocument" accept="image/*,.pdf"><br>
-
-    <label for="domicileProofDocument">domicilio:</label>
-    <input type="file" name="domicileProofDocument" id="domicileProofDocument" accept="image/*,.pdf"><br>
-
-    <label for="accountStatementDocument">estado de cuenta:</label>
-    <input type="file" name="accountStatementDocument" id="accountStatementDocument" accept="image/*,.pdf"><br>
-
-    <button class="btn-uploads" type="submit">subir</button>
-<div id="uploadPremiumMessage"></div>
-</form>
-<form action="/api/users/premium/{{userId}}" method="post">
-    <div class=""><button class="btn-uploads"  type="submit">convertirse en premium</button></div>
-</form>
-</div>
-
+    <form class="formulario-upd" id="uploadPremiumForm" action="/api/users/{{userId}}/premium-documents" method="post" enctype="multipart/form-data">
+        <h2>subir documentos premiums</h2>
+        <div class="uploads">
+            <label for="identificationDocument">identificacion:</label>
+            <input class="casilleros" type="file" name="identificationDocument" id="identificationDocument" accept="image/*,.pdf"><br>
+        </div>
+        <div class="uploads">
+            <label for="domicileProofDocument">domicilio:</label>
+            <input class="casilleros" type="file" name="domicileProofDocument" id="domicileProofDocument" accept="image/*,.pdf"><br>
+        </div>
+        <div class="uploads">
+            <label for="accountStatementDocument">estado de cuenta:</label>
+            <input class="casilleros" type="file" name="accountStatementDocument" id="accountStatementDocument" accept="image/*,.pdf"><br>
+        </div>
+        <button class="btn-uploads" type="submit">subir</button>
+    <div id="uploadPremiumMessage"></div>
+    </form>
+    <form action="/api/users/premium/{{userId}}" method="post">
+        <div class="boton"><button class="btn-uploads"  type="submit">convertirse en premium</button></div>
+    </form>
+    </div>
+</main>
 <script src="/js/upload.js"></script>

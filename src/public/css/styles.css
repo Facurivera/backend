@@ -81,6 +81,7 @@ header {
   background-color: rgb(196, 12, 21);
   color: white;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .boton:hover {
@@ -219,7 +220,40 @@ header {
   justify-content: space-evenly;
 }
 
-.img-realtime{
-  width: 350px;
-  height: 350px;
+.delete-button {
+  border-radius: 15px;
+  padding: 6px;
+  margin: 9px;
+  background-color: rgb(196, 12, 21);
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.edit-button {
+  border-radius: 15px;
+  padding: 6px;
+  margin: 9px;
+  background-color: rgb(196, 12, 21);
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-uploads {
+  border-radius: 15px;
+  padding: 6px;
+  margin: 9px;
+  background-color: rgb(196, 12, 21);
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.div-upd {
+  text-align: center;
+}
+
+.formulario-upd {
+  margin: 25px;
 }
