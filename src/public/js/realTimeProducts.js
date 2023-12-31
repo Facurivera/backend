@@ -67,7 +67,7 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
   try {
     const response = await fetch(url, { method: method, headers: {
          "Content-Type": "application/json" },
-      body: JSON.stringify({ title, description, code, price, stock, category, thumbnails, }),
+      body: JSON.stringify({ title, code, price, stock, category, thumbnails, }),
     });
 
     if (response.ok) {
