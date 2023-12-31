@@ -1,52 +1,72 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
+body {
     background-color: rgb(255, 255, 255);
 }
-header{
-    background-color: rgb(196, 12, 21);
 
+header {
+    background-color: rgb(196, 12, 21);
 }
-.titulo{
+
+.titulo {
     text-align: center;
     color: white;
     font-size: xx-large;
 }
-.container{
+
+.container {
     display: flex;
     text-align: center;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
-.prod{
+
+.prod {
     max-width: 400px;
     max-height: 500px;
     margin: 25px;
     margin-bottom: 40px;
     width: 397px;
 }
-.img{
+
+.img {
     width: 350px;
     height: 350px;
 }
-.detail{
+
+.detail {
     font-size: x-large;
+    color: black;
+    text-decoration: none;
 }
-.sub-titulo{
+
+.sub-titulo {
     text-align: center;
     margin: 5px;
 }
-.formulario{
+
+.form-chat{
+    text-align: center;
+}
+
+.messages{
+    text-align: start;
+    margin-top: 3%;
+    margin-left: 2%;
+    list-style: none;
+}
+
+.formulario {
     text-align: center;
     margin: 10px;
 }
 
-.casilleros{
+.casilleros {
     margin: 3px;
     border: 1px solid;
     border-radius: 4px;
@@ -54,41 +74,48 @@ header{
     width: 25%;
 }
 
-.boton{
+.boton {
     border-radius: 15px;
-    padding: 4px;
+    padding: 6px;
     margin: 9px;
     background-color: rgb(196, 12, 21);
     color: white;
     cursor: pointer;
 }
-.boton:hover{
+
+.boton:hover {
     background-color: white;
     color: rgb(196, 12, 21);
     border: 2px solid rgb(196, 12, 21);
 }
-.enlaces{
+
+.enlaces {
     padding: 25px;
 }
-.enlace{
+
+.enlace {
     color: white;
     text-decoration: none;
     margin-left: 50px;
     font-size: 20px;
 }
-.enlace:hover{
+
+.enlace:hover {
     color: black;
 }
-.mensajeria{
+
+.mensajeria {
     text-align: center;
     margin: 20px;
 }
-.paginado{
+
+.paginado {
     display: flex;
     justify-content: space-evenly;
     margin: 25px;
 }
-.link{
+
+.link {
     color: white;
     background: red;
     border: 1px solid black;
@@ -96,48 +123,92 @@ header{
     font-size: 25px;
     padding: 5px;
 }
-.carrito{
+
+.carrito {
     display: flex;
     margin-top: 5%;
-    flex-direction: row;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
 }
-.carrito-img{
+
+.carrito-img {
     height: 150px;
     width: 150px;
     margin-right: 100px;
 }
-.carrito-text{
+
+.carrito-text {
     font-size: 30px;
     padding-left: 20px;
 }
-.carrito-boton{
+
+.carrito-boton {
     font-size: 20px;
     margin-left: 100px;
 }
-.portada{
+
+.portada {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 25px;
 }
-.user-formulario{
+
+.user-formulario {
     margin-top: 25px;
     display: flex;
     flex-direction: column;
 }
-.user-cas{
+
+.user-cas {
     width: 100%;
 }
-.redirrecion{
+
+.redirrecion {
     text-decoration: none;
     text-align: center;
 }
-.inicio-enlaces{
+
+.inicio-enlaces {
     font-size: 20px;
     text-decoration: none;
     color: black;
 }
-.inicio-enlaces:hover{
+
+.inicio-enlaces:hover {
     color: rgb(196, 12, 21);
+}
+
+.list-prod{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style: none;
+}
+
+.text-perf{
+    margin: 5px;
+}
+
+.realtime-prod{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
+.formulario-realtime{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
 }
