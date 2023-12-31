@@ -135,8 +135,8 @@ router.get("/upload/:uid", (req, res) => {
 });
 
 //router.get("/upload/", (req, res) => {
-  const userId = "valor_predeterminado";
-  res.render("uploads", { userId });
+//  const userId = "valor_predeterminado";
+ // res.render("uploads", { userId });
 //});
 
 router.get("/premium/:uid", (req, res) => {
