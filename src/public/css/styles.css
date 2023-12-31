@@ -178,3 +178,9 @@ header {
 .inicio-enlaces:hover {
   color: rgb(196, 12, 21);
 }
+
+.list-prod{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,8 +1,8 @@
 {{> header}}
-<div>
-    <ul class="carrito">
+<div class="carrito">
+    <ul>
         {{#each products}}
-            <li>
+            <li class="list-prod">
                 <img src="{{this.product.thumbnails}}" alt="{{this.product.title}}" class="carrito-img">
                 <p class="carrito-text">{{this.product.title}}</p>
                 <p class="carrito-text">${{this.product.price}}</p>
@@ -10,7 +10,7 @@
             </li>
         {{/each}}
     </ul>
-    <button id="payment">Pagar</button>
+    <button id="payment" class="boton">Pagar</button>
 </div>
 
 <script src="/js/cart.js"></script>
