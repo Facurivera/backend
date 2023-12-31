@@ -77,7 +77,7 @@ router.get("/mostrar-ticket/:ticketId", async (req, res) => {
 });
 
 router.get("/realtimeproducts", (req, res) => {
-  res.render("realTimeProducts");
+  res.render("realtimeproducts");
 });
 
 router.get("/chat", (req, res) => {
