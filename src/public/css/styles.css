@@ -218,3 +218,8 @@ header {
   align-items: center;
   justify-content: space-evenly;
 }
+
+.img-realtime{
+  width: 350px;
+  height: 350px;
+}

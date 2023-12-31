@@ -218,3 +218,19 @@ header {
     align-items: center;
     justify-content: space-evenly;
 }
+.delete-button{
+    border-radius: 15px;
+    padding: 6px;
+    margin: 9px;
+    background-color: rgb(196, 12, 21);
+    color: white;
+    cursor: pointer;
+}
+.edit-button{
+    border-radius: 15px;
+    padding: 6px;
+    margin: 9px;
+    background-color: rgb(196, 12, 21);
+    color: white;
+    cursor: pointer;
+}
