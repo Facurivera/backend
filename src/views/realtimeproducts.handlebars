@@ -13,7 +13,7 @@
 <main>
     <div >
         <h1 class="sub-titulo">Agregar Productos</h1>
-        <form method="post" action="/prods" class="formulario-realtime">
+        <form id="productForm" class="formulario-realtime">
             <input type="text" class="casilleros" id="thumbnails" name="Url" placeholder="URL del Producto..." required>
             <input type="text" class="casilleros" id="title" name="Producto" placeholder="Nombre del Producto..." required>
             <input type="number" class="casilleros" id="price" name="Precio" placeholder="Precio del Producto..." required>
@@ -31,8 +31,8 @@
             <li id="product-{{this._id}}" class="product">
                 <img class="img" src={{this.thumbnails}} alt={{this.title}} >
                 <span>Producto: {{this.title}} - Stock: {{this.stock}} - Categoria: {{this.category}}</span>
-                <button class="boton" data-id="{{this._id}}">Eliminar</button>
-                <button class="boton" data-id="{{this._id}}">Editar</button>
+                <button class="delete-button boton" data-id="{{this._id}}">Eliminar</button>
+                <button class="edit-button boton" data-id="{{this._id}}">Editar</button>
             </li>
             {{/each}}
         </ul>
