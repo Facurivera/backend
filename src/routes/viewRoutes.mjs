@@ -36,7 +36,7 @@ router.get("/products/:pid", async (req, res) => {
   const pid = req.params.pid;
   const product = await PM.getProductById(pid);
   if (product) {
-    res.render("productDetail", { product });
+    res.render("prodDetail", { product });
   } else {
     res.status(404).send({ status: "error", message: "Product not found." });
   }
