@@ -50,11 +50,11 @@ header {
   margin: 5px;
 }
 
-.form-chat{
+.form-chat {
   text-align: center;
 }
 
-.messages{
+.messages {
   text-align: start;
   margin-top: 3%;
   margin-left: 2%;
@@ -179,24 +179,24 @@ header {
   color: rgb(196, 12, 21);
 }
 
-.list-prod{
+.list-prod {
   display: flex;
   align-items: center;
   justify-content: space-between;
   list-style: none;
 }
 
-.text-perf{
+.text-perf {
   margin: 5px;
 }
 
-.realtime-prod{
+.realtime-prod {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.product{
+.product {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -204,11 +204,17 @@ header {
   list-style: none;
 }
 
-.formulario-realtime{
+.formulario-realtime {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   margin: 10px;
+}
+
+.prod-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
