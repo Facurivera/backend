@@ -196,7 +196,7 @@ header {
   align-items: center;
 }
 
-.products{
+.product{
   display: flex;
   flex-direction: column;
   justify-content: center;
