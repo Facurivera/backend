@@ -131,7 +131,7 @@ router.get("/failregister", async (req, res) => {
 router.get("/upload/:uid", (req, res) => {
   const userId = req.params.uid;
   console.log("UserID:", userId);
-  res.render("uploads", { userId });
+  res.render("upload", { userId });
 });
 
 router.get("/premium/:uid", (req, res) => {
