@@ -134,6 +134,11 @@ router.get("/upload/:uid", (req, res) => {
   res.render("uploads", { userId });
 });
 
+router.get("/upload/", (req, res) => {
+  const userId = "valor_predeterminado";
+  res.render("uploads", { userId });
+});
+
 router.get("/premium/:uid", (req, res) => {
   const userId = req.params.uid;
   console.log("UserID:", userId);
