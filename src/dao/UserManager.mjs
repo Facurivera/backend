@@ -54,5 +54,13 @@ class UserManager {
         return false;
       }
     }
+    async getUserById(id) {
+      try{
+          return await userModel.findById(id).lean();
+      } catch (error) {
+          console.log("No encontrado");
+          return null;
+      }
+  }
   }
   export default UserManager;

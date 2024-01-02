@@ -1,6 +1,7 @@
 import express from "express";
 import ProductManager from "../dao/ProductManager.mjs";
 import CartsManager from "../dao/CartManager.mjs";
+import UserManager from "../dao/UserManager.mjs";
 import CartControllers from "../controllers/cartCont.mjs"
 import { checkAlreadyLoggedIn, checkSession } from "../middlewares/ingreso.mjs";
 import { userModel } from "../dao/models/user.model.mjs"
@@ -9,6 +10,7 @@ import ticketCont from "../controllers/ticketCont.mjs";
 const router = express.Router();
 const PM = new ProductManager();
 const CM = new CartsManager();
+const UM = new UserManager()
 const cartControllers = new CartControllers();
 
 async function loadUserCart(req, res, next) {
@@ -128,9 +130,9 @@ router.get("/failregister", async (req, res) => {
   });
 });
 
-router.get("/upload/:uid", (req, res) => {
-  const userId = req.params.uid;
-  console.log("UserID:", userId);
+router.get("/upload/:uid", async (req, res) => {
+  const uid = req.params.uid;
+  const userId = await UM.getUserById(uid);
   res.render("uploads", { userId });
 });
 
