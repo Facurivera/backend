@@ -130,24 +130,17 @@ router.get("/failregister", async (req, res) => {
   });
 });
 
-router.get("/upload/:uid", async  (req, res) => {
+router.get("/upload/:uid", (req, res) => {
   const userId = req.params.uid;
-  const user = await userModel.findById(userId);
-  res.render("uploads", { user });
+  console.log("UserID:", userId);
+  res.render("uploads", { userId });
 });
-
-
 
 router.get("/premium/:uid", (req, res) => {
   const userId = req.params.uid;
   console.log("UserID:", userId);
   res.render("premium", { userId });
 });
-
-router.get("/premium/", (req, res) => {
-  const userId = "valor_predeterminado";
-  res.render("premium", { userId });
-})
 
 router.get("/adminController", async (req, res) => {
   const users = await userModel.find();
