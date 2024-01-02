@@ -150,8 +150,8 @@ router.get("/premium/", (req, res) => {
   res.render("premium", { userId });
 })
 
-router.get("/adminController", async (req, res) => {
+router.get("/adminC", async (req, res) => {
   const users = await userModel.find();
-  res.render("adminC", { users });
+  res.render("adminController", { users });
 });
 export default router;
