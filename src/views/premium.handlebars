@@ -1,15 +1,29 @@
-{{> header}}
-<form action="/api/users/premuim/{{userId}}" method="post" enctype="multipart/form-data">
-    <h2>subir archivos</h2>
+<header class="header">
+    <nav>
+        <h1 class="titulo">Premium</h1>
+        <div class="enlaces">
+            <a href="/products" class="enlace">productos</a>            
+            <a href="/carts" class="enlace">carrito</a>
+            <a href="/realtimeproducts" class="enlace">realtimeproducts</a>
+            <a href="/chat" class="enlace">chat</a>
+            <a href="/profile" class="enlace">perfil</a>
+            <a href="/upload/{{userId}}" class="enlace">Upload</a>
+            <a href="/adminController" class="enlace">Admin Controller</a>
+        </div>
+    </nav>
+</header>
+<main>
+    <form action="/api/users/premuim/{{userId}}" method="post" enctype="multipart/form-data">
 
-    <label for="profileImage">imagen del perfil:</label>
-    <input type="file" name="profiles" id="profileImage" accept="image/*"><br>
+        <label for="profileImage">imagen del perfil:</label>
+        <input type="file" name="profiles" id="profileImage" accept="image/*"><br>
 
-    <label for="productImage">imagen del producto:</label>
-    <input type="file" name="products" id="productImage" accept="image/*"><br>
+        <label for="productImage">imagen del producto:</label>
+        <input type="file" name="products" id="productImage" accept="image/*"><br>
 
-    <label for="document">documentos:</label>
-    <input type="file" name="document" id="document" accept=".pdf,.doc,.docx"><br>
+        <label for="document">documentos:</label>
+        <input type="file" name="document" id="document" accept=".pdf,.doc,.docx"><br>
 
-    <button type="submit">convertirse en premium</button>
-</form>
+        <button type="submit">convertirse en premium</button>
+    </form>
+</main>
