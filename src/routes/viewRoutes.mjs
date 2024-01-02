@@ -150,7 +150,7 @@ router.get("/premium/", (req, res) => {
   res.render("premium", { userId });
 })
 
-router.get("/adminC", async (req, res) => {
+router.get("/adminController", async (req, res) => {
   const users = await userModel.find();
   res.render("adminController", { users });
 });
