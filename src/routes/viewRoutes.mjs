@@ -131,15 +131,14 @@ router.get("/failregister", async (req, res) => {
 });
 
 router.get("/upload/:uid", async (req, res) => {
-  const uid = req.params.uid;
-  const userId = await UM.getUserById(uid);
+  const userId = req.params.uid;
   res.render("uploads", { userId });
 });
 
-//router.get("/upload/", (req, res) => {
-  //const userId = "valor_predeterminado";
-  //res.render("uploads", { userId });
-//});
+router.get("/upload/", (req, res) => {
+  const userId = "valor_predeterminado";
+  res.render("uploads", { userId });
+});
 
 router.get("/premium/:uid", (req, res) => {
   const userId = req.params.uid;
@@ -147,10 +146,10 @@ router.get("/premium/:uid", (req, res) => {
   res.render("premium", { userId });
 });
 
-//router.get("/premium/", (req, res) => {
-  //const userId = "valor_predeterminado";
-  //res.render("premium", { userId });
-//})
+router.get("/premium/", (req, res) => {
+  const userId = "valor_predeterminado";
+  res.render("premium", { userId });
+})
 
 router.get("/adminController", async (req, res) => {
   const users = await userModel.find();
