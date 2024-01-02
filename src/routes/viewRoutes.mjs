@@ -130,7 +130,7 @@ router.get("/failregister", async (req, res) => {
   });
 });
 
-router.get("/upload/:uid", async (req, res) => {
+router.get("/upload/:uid",  (req, res) => {
   const userId = req.params.uid;
   res.render("uploads", { userId });
 });
