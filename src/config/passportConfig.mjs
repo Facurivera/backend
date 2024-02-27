@@ -100,7 +100,7 @@ const initializePassport = () => {
     passport.use("github", new GitHubStrategy({
         clientID: ENV_CONFIG.clientIdGithub,
         clientSecret: ENV_CONFIG.clientSecretGithub,
-        callbackURL:"https://backend-production-616f.up.railway.app/api/sessions/githubcallback"
+        callbackURL:"https://backendrivera.netlify.app/api/sessions/githubcallback"
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const authService = new AuthService();
